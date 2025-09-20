@@ -28,9 +28,12 @@ public class FreshLootHighlightConfigScreen extends Screen {
 
         // Example: Add categories + buttons
         list.addCategory("phantom-clock.config.category");
-        list.addButton(SettingsManager.ENABLE_CHAT_WARNING, btn -> {
-            SettingsManager.ENABLE_CHAT_WARNING.setToNextValue();
+        list.addButton(SettingsManager.ENABLE_PIKCUP_WARNING, btn -> {
+            SettingsManager.ENABLE_PIKCUP_WARNING.setToNextValue();
         });
+        list.addButton(SettingsManager.ENABLE_PIKCUP_WARNING_GROUPING, btn -> {
+            SettingsManager.ENABLE_PIKCUP_WARNING_GROUPING.setToNextValue();
+        }, INDENT);
 
         ButtonWidget doneButton = ButtonWidget.builder(Text.literal("Done"), b -> {
             this.client.setScreen(this.parent);

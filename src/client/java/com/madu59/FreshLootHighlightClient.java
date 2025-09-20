@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.madu59.config.SettingsManager;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.entity.player.PlayerInventory;
@@ -17,7 +19,6 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	/*TO-DO:
 	 * Pick-up notifications with a custom HUD
 	 * Only mark as new when never found before toggle
-	 * Handle hotbar in creative inventory categories
 	 */
 
 	private final static MinecraftClient CLIENT = MinecraftClient.getInstance();
@@ -41,7 +42,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			Iterator<Integer> iterator = freshSlots.iterator();
 			while (iterator.hasNext()) {
 				int slotId = iterator.next();
-				if (inv.getStack(slotId).isEmpty()) {
+				if (inv.getStack(slotId).isEmpty() || slotId == -1) {
 					iterator.remove();
 				}
 			}
@@ -55,14 +56,16 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		PlayerInventory inv = CLIENT.player.getInventory();
 		int count = pickedUpItemStack.getCount();
 
-		pickUpMessages.add(ChatUtils.sendOrEditItemPickUpMessage(pickedUpItemStack));
+		if(Boolean.TRUE.equals(SettingsManager.ENABLE_PIKCUP_WARNING.getValue())){
+			pickUpMessages.add(ChatUtils.sendOrEditItemPickUpMessage(pickedUpItemStack));
+		}
 
 		System.out.println("Player picked up: " + pickedUpItemStack);
 
 		for(int i = 0; i < inv.size(); i++) {
 			ItemStack stack = inv.getStack(i);
 			if(stack.getItem() == pickedUpItemStack.getItem()) {
-				count -= 64 - stack.getCount();
+				count -= stack.getMaxCount() - stack.getCount();
 				if(count < 0){
 					System.out.println("Item added in an already created stack: " + i);
 					return;

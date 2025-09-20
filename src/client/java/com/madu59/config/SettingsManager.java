@@ -20,13 +20,31 @@ public class SettingsManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(FreshLootHighlight.MOD_ID + ".json");
 
-    public static Option ENABLE_CHAT_WARNING = loadOptionWithDefaults(
-        "ENABLE_CHAT_WARNING",
-        "phantom-clock.config.enable_chat_warning",
-        "phantom-clock.config.enable_chat_warning_desc",
+    public static Option ENABLE_PIKCUP_WARNING = loadOptionWithDefaults(
+        "ENABLE_PIKCUP_WARNING",
+        "phantom-clock.config.enable_pickup_warning",
+        "phantom-clock.config.enable_pickup_warning_desc",
         true,
         true,
         List.of(true,false)
+    );
+
+    public static Option ENABLE_PIKCUP_WARNING_GROUPING = loadOptionWithDefaults(
+        "ENABLE_PIKCUP_WARNING_GROUPING",
+        "phantom-clock.config.enable_pickup_warning_grouping",
+        "phantom-clock.config.enable_pickup_warning_desc_grouping",
+        "10s",
+        "10s",
+        List.of("10s","5s","3s","Never")
+    );
+
+    public static Option PIKCUP_WARNING_TIMEOUT = loadOptionWithDefaults(
+        "ENABLE_PIKCUP_WARNING_TIMEOUT",
+        "phantom-clock.config.enable_pickup_warning_timeout",
+        "phantom-clock.config.enable_pickup_warning_desc_timeout",
+        "10s",
+        "10s",
+        List.of("10s","5s","3s")
     );
 
     public static List<String> getAllOptionsId(){
