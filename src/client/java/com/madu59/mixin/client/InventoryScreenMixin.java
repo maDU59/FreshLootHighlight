@@ -6,12 +6,14 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 
 import com.madu59.FreshLootHighlightClient;
@@ -23,10 +25,7 @@ public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHan
         super(handler, inventory, title);
     }
 
-    @Inject(
-        method = "render",
-        at = @At("TAIL")
-    )
+    @Inject(method = "render", at = @At("TAIL"))
     private void drawNewItemBadges(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         InventoryScreen screen = (InventoryScreen) (Object) this;
 
@@ -48,19 +47,17 @@ public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHan
 
             if(FreshLootHighlightClient.freshSlots.contains(inventoryIndex)) {
 
-                System.out.println("Slot " + i + " is a fresh slot");
-
-                // Coordonnées du slot
+                // Slot screen coordinates
                 int x = slot.x + this.x;
                 int y = slot.y + this.y;
 
-                // Petit rectangle rouge
-                context.fill(x, y + 12, x + 4, y + 16, 0xFFFF0000);
+                // Display exlamation mark
+                Identifier exclamationMarkTexture = Identifier.of("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
 
-                // Supprime le badge si la souris survole le slot
+                // Delete from fresh list on hovering
                 if(mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                     FreshLootHighlightClient.freshSlots.remove((Integer)inventoryIndex);
-                    System.out.println("Removed slot " + i + " from fresh slots");
                 }
             }
         }
