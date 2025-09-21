@@ -20,8 +20,8 @@ public class SettingsManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(FreshLootHighlight.MOD_ID + ".json");
 
-    public static Option ENABLE_PIKCUP_WARNING = loadOptionWithDefaults(
-        "ENABLE_PIKCUP_WARNING",
+    public static Option ENABLE_PICKUP_WARNING = loadOptionWithDefaults(
+        "ENABLE_PICKUP_WARNING",
         "phantom-clock.config.enable_pickup_warning",
         "phantom-clock.config.enable_pickup_warning_desc",
         true,
@@ -29,8 +29,8 @@ public class SettingsManager {
         List.of(true,false)
     );
 
-    public static Option ENABLE_PIKCUP_WARNING_GROUPING = loadOptionWithDefaults(
-        "ENABLE_PIKCUP_WARNING_GROUPING",
+    public static Option ENABLE_PICKUP_WARNING_GROUPING = loadOptionWithDefaults(
+        "ENABLE_PICKUP_WARNING_GROUPING",
         "phantom-clock.config.enable_pickup_warning_grouping",
         "phantom-clock.config.enable_pickup_warning_desc_grouping",
         "10s",
@@ -38,13 +38,31 @@ public class SettingsManager {
         List.of("10s","5s","3s","Never")
     );
 
-    public static Option PIKCUP_WARNING_TIMEOUT = loadOptionWithDefaults(
-        "ENABLE_PIKCUP_WARNING_TIMEOUT",
-        "phantom-clock.config.enable_pickup_warning_timeout",
-        "phantom-clock.config.enable_pickup_warning_desc_timeout",
+    public static Option PICKUP_WARNING_TIMEOUT = loadOptionWithDefaults(
+        "PICKUP_WARNING_TIMEOUT",
+        "phantom-clock.config.pickup_warning_timeout",
+        "phantom-clock.config.pickup_warning_desc_timeout",
         "10s",
         "10s",
         List.of("10s","5s","3s")
+    );
+
+    public static Option PICKUP_WARNING_STYLE = loadOptionWithDefaults(
+        "PICKUP_WARNING_HUD_STYLE",
+        "phantom-clock.config.pickup_warning_hud_style",
+        "phantom-clock.config.pickup_warning_hud_style",
+        "Default",
+        "Default",
+        List.of("Default","Long")
+    );
+
+    public static Option PICKUP_WARNING_HUD_POSITION = loadOptionWithDefaults(
+        "PICKUP_WARNING_HUD_POSITION",
+        "phantom-clock.config.pickup_warning_hud_position",
+        "phantom-clock.config.pickup_warning_hud_position",
+        "TOP_LEFT",
+        "TOP_LEFT",
+        List.of("TOP_LEFT","TOP_RIGHT","BOTTOM_RIGHT")
     );
 
     public static List<String> getAllOptionsId(){
