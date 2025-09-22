@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class PickUpWarning {
 
@@ -12,7 +13,7 @@ public class PickUpWarning {
     public int count;
     public Item item;
     public int creationTick;
-
+    public Identifier textureId = null;
 
     public PickUpWarning(ItemStack itemStack){
         this.itemStack = itemStack;
@@ -28,6 +29,10 @@ public class PickUpWarning {
         this.item = item;
         this.message = PickUpWarningUtils.createMessage(this.item, this.count);
         this.creationTick = MinecraftClient.getInstance().inGameHud.getTicks();
+    }
+
+    public void setTexture(Identifier textureId){
+        this.textureId = textureId;
     }
 
 }

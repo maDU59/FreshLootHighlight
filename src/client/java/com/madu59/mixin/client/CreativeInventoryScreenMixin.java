@@ -3,6 +3,8 @@ package com.madu59.mixin.client;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 
@@ -47,19 +50,28 @@ public abstract class CreativeInventoryScreenMixin extends HandledScreen<PlayerS
                     inventoryIndex = -1; // crafting, skip
                 }
 
+                Identifier exclamationMarkTexture = Identifier.of("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+                Identifier exclamationMarkTextureAlt = Identifier.of("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
+
                 if(FreshLootHighlightClient.freshSlots.contains(inventoryIndex)) {
+
+                    Item item = MinecraftClient.getInstance().player.getInventory().getStack(inventoryIndex).getItem();
+                    Identifier itemId = Registries.ITEM.getId(item);
+                    boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);
 
                     // Slot screen coordinates
                     int x = slot.x + this.x;
                     int y = slot.y + this.y;
 
                     // Display exlamation mark
-                    Identifier exclamationMarkTexture = Identifier.of("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
 
                     // Delete from fresh list on hovering
                     if(mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                         FreshLootHighlightClient.freshSlots.remove((Integer)inventoryIndex);
+                        if(isFoundForTheFirstTime){
+                            FreshLootHighlightClient.foundForTheFirstTime.remove(itemId);
+                        }
                     }
                 }
             }

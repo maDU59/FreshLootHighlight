@@ -43,6 +43,9 @@ public class FreshLootHighlightConfigScreen extends Screen {
         list.addButton(SettingsManager.PICKUP_WARNING_HUD_POSITION, btn -> {
             SettingsManager.PICKUP_WARNING_HUD_POSITION.setToNextValue();
         }, INDENT);
+        list.addButton(SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM, btn -> {
+            SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM.setToNextValue();
+        }, INDENT);
 
         ButtonWidget doneButton = ButtonWidget.builder(Text.literal("Done"), b -> {
             this.client.setScreen(this.parent);

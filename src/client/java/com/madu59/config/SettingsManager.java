@@ -65,6 +65,15 @@ public class SettingsManager {
         List.of("TOP_LEFT","TOP_RIGHT","BOTTOM_RIGHT")
     );
 
+    public static Option PICKUP_WARNING_HUD_SHOW_ITEM = loadOptionWithDefaults(
+        "PICKUP_WARNING_HUD_SHOW_ITEM",
+        "phantom-clock.config.pickup_warning_hud_show_item",
+        "phantom-clock.config.pickup_warning_show_item",
+        true,
+        true,
+        List.of(true, false)
+    );
+
     public static List<String> getAllOptionsId(){
         List<String> list = new ArrayList<>();
         for (Option option : ALL_OPTIONS){
