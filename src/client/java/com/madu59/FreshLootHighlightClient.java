@@ -39,8 +39,7 @@ import net.minecraft.util.WorldSavePath;
 public class FreshLootHighlightClient implements ClientModInitializer {
 
 	/*TO-DO:
-	 * Add new masks for fence gates, fence
-	 * Accessibility: tell what item is picked up using narrator
+	 * Test for previous versions compatibility
 	 */
 
 	private static final MinecraftClient CLIENT = MinecraftClient.getInstance();
