@@ -22,8 +22,8 @@ public class SettingsManager {
 
     public static Option ENABLE_PICKUP_WARNING = loadOptionWithDefaults(
         "ENABLE_PICKUP_WARNING",
-        "phantom-clock.config.enable_pickup_warning",
-        "phantom-clock.config.enable_pickup_warning_desc",
+        "fresh-loot-highlight.config.enable_pickup_warning",
+        "fresh-loot-highlight.config.enable_pickup_warning_desc",
         true,
         true,
         List.of(true,false)
@@ -31,8 +31,8 @@ public class SettingsManager {
 
     public static Option ENABLE_PICKUP_WARNING_GROUPING = loadOptionWithDefaults(
         "ENABLE_PICKUP_WARNING_GROUPING",
-        "phantom-clock.config.enable_pickup_warning_grouping",
-        "phantom-clock.config.enable_pickup_warning_desc_grouping",
+        "fresh-loot-highlight.config.enable_pickup_warning_grouping",
+        "fresh-loot-highlight.config.enable_pickup_warning_grouping_desc",
         "10s",
         "10s",
         List.of("10s","5s","3s","Never")
@@ -40,8 +40,8 @@ public class SettingsManager {
 
     public static Option PICKUP_WARNING_TIMEOUT = loadOptionWithDefaults(
         "PICKUP_WARNING_TIMEOUT",
-        "phantom-clock.config.pickup_warning_timeout",
-        "phantom-clock.config.pickup_warning_desc_timeout",
+        "fresh-loot-highlight.config.pickup_warning_timeout",
+        "fresh-loot-highlight.config.pickup_warning_timeout_desc",
         "10s",
         "10s",
         List.of("10s","5s","3s")
@@ -49,8 +49,8 @@ public class SettingsManager {
 
     public static Option PICKUP_WARNING_STYLE = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_STYLE",
-        "phantom-clock.config.pickup_warning_hud_style",
-        "phantom-clock.config.pickup_warning_hud_style",
+        "fresh-loot-highlight.config.pickup_warning_hud_style",
+        "fresh-loot-highlight.config.pickup_warning_hud_style_desc",
         "Default",
         "Default",
         List.of("Default","Long")
@@ -58,8 +58,8 @@ public class SettingsManager {
 
     public static Option PICKUP_WARNING_HUD_POSITION = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_POSITION",
-        "phantom-clock.config.pickup_warning_hud_position",
-        "phantom-clock.config.pickup_warning_hud_position",
+        "fresh-loot-highlight.config.pickup_warning_hud_position",
+        "fresh-loot-highlight.config.pickup_warning_hud_position_desc",
         "TOP_LEFT",
         "TOP_LEFT",
         List.of("TOP_LEFT","TOP_RIGHT","BOTTOM_RIGHT")
@@ -67,8 +67,26 @@ public class SettingsManager {
 
     public static Option PICKUP_WARNING_HUD_SHOW_ITEM = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_SHOW_ITEM",
-        "phantom-clock.config.pickup_warning_hud_show_item",
-        "phantom-clock.config.pickup_warning_show_item",
+        "fresh-loot-highlight.config.pickup_warning_hud_show_item",
+        "fresh-loot-highlight.config.pickup_warning_hud_show_item_desc",
+        true,
+        true,
+        List.of(true, false)
+    );
+
+    public static Option ENABLE_SLOT_HIGHLIGHTER = loadOptionWithDefaults(
+        "ENABLE_SLOT_HIGHLIGHTER",
+        "fresh-loot-highlight.config.enable_slot_highlighter",
+        "fresh-loot-highlight.config.enable_slot_highlighter_desc",
+        true,
+        true,
+        List.of(true, "Only if never seen before", false)
+    );
+
+    public static Option ENABLE_PICK_UP_WARNING_NARRATOR = loadOptionWithDefaults(
+        "ENABLE_PICK_UP_WARNING_NARRATOR",
+        "fresh-loot-highlight.config.enable_pick_up_warning_narrator",
+        "fresh-loot-highlight.config.enable_pick_up_warning_narrator_desc",
         true,
         true,
         List.of(true, false)

@@ -123,10 +123,10 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		}
 
 		Identifier itemId = Registries.ITEM.getId(item);
-		if(alreadyFound.contains(itemId)){
+		if(alreadyFound.contains(itemId) && Boolean.TRUE.equals(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue())){
 			freshSlots.add(inv.getEmptySlot());
 		}
-		else{
+		else if(!Boolean.FALSE.equals(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue())){
 			alreadyFound.add(itemId);
 			freshSlots.add(inv.getEmptySlot());
 			foundForTheFirstTime.add(itemId);

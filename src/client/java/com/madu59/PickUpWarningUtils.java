@@ -33,10 +33,20 @@ public class PickUpWarningUtils {
     };
     private final static Map<String, String> CONVERTION_LAYER_MAP  = Map.ofEntries(
         entry("wood", "log"),
-        entry("acacia", "acacia_planks"),
         entry("oak", "oak_planks"),
+        entry("pale_oak", "pale_oak_planks"),
+        entry("spruce", "spruce_planks"),
+        entry("birch", "birch_planks"),
+        entry("jungle", "jungle_planks"),
+        entry("acacia", "acacia_planks"),
         entry("dark_oak", "dark_oak_planks"),
-        entry("jungle", "jungle_planks")
+
+        entry("mangrove", "mangrove_planks"),
+        entry("cherry", "cherry_planks"),
+        entry("bamboo", "bamboo_planks"),
+        entry("crimson", "crimson_planks"),
+        entry("warped", "warped_planks"),
+        entry("moss", "moss_block")
     );
     private final static Identifier NULL_IDENTIFIER = Identifier.of("null");
     private static final Set<Identifier> dynamicTextures = new HashSet<>();
@@ -55,7 +65,7 @@ public class PickUpWarningUtils {
 
     public static Text createMessage(Text name, int count, boolean forceLong){
         if(forceLong || SettingsManager.PICKUP_WARNING_STYLE.getValueAsString().equals("Long")){
-            return Text.translatable("flh.picked-up-message").append(Text.literal(String.valueOf(count))).append(" ").append(name);
+            return Text.translatable("fresh-loot-highlight.picked-up-message").append(Text.literal(String.valueOf(count))).append(" ").append(name);
         }
         else{
             return Text.literal("> ").append(Text.literal(String.valueOf(count))).append(" ").append(name);
@@ -74,14 +84,14 @@ public class PickUpWarningUtils {
                     count += extractCountFromMessage(warning.message);
                     messages.remove(id);
                     messages.add(new PickUpWarning(item, count));
-                    NarratorUtils.narrate(createMessage(item.getName(), count, true));
+                    if(Boolean.TRUE.equals(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue())) NarratorUtils.narrate(createMessage(item.getName(), count, true));
                     return messages;
                 }
                 id++;
             }
         }
         messages.add(new PickUpWarning(item, count));
-        NarratorUtils.narrate(createMessage(item.getName(), count, true));
+        if(Boolean.TRUE.equals(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue())) NarratorUtils.narrate(createMessage(item.getName(), count, true));
         return messages;
     }
 
@@ -118,15 +128,20 @@ public class PickUpWarningUtils {
         String itemType = getItemType(itemId);
         String itemMaterial = getItemMaterial(itemId);
         String convertedItemType = convertionLayer(itemType);
+        iconId = tryToFind2DTexture("minecraft", itemMaterial + "_side");
+        if(iconId != NULL_IDENTIFIER) return iconId;
+        iconId = tryToFind2DTexture("minecraft", itemMaterial + "_top");
+        if(iconId != NULL_IDENTIFIER) return iconId;
         iconId = tryToFind2DTexture("minecraft", itemMaterial + "_" + convertedItemType);
         if(iconId != NULL_IDENTIFIER) return iconId;
-        itemMaterial = convertionLayer(itemMaterial);
+        itemMaterial = convertionLayer(itemMaterial, convertedItemType);
         iconId = tryToFind2DTexture("minecraft", itemMaterial + "_" + convertedItemType);
         if(iconId != NULL_IDENTIFIER) return iconId;
         Identifier registeredId = Identifier.of(FreshLootHighlight.MOD_ID, "dynamic/" + itemMaterial + "_" + convertedItemType + ".png");
         if(dynamicTextures.contains(registeredId)) return registeredId;
         iconId = generateIconFromMask(itemId, itemMaterial, convertedItemType);
         if(iconId != NULL_IDENTIFIER) return iconId;
+        System.out.println("Could not find texture for " + itemId.toString() + " (tried material: " + itemMaterial + ", type: " + itemType + ")");
         return NULL_IDENTIFIER;
     }
 
@@ -146,12 +161,16 @@ public class PickUpWarningUtils {
         }
 
         int size = parts.length - 1;
+        int start =0;
 
-        if(Arrays.stream(parts).anyMatch("fence"::equals)){
+        if(Arrays.stream(parts).anyMatch("gate"::equals) || Arrays.stream(parts).anyMatch("pressure"::equals)){
             size -= 1;
         }
+        if(parts[0].equals("waxed")){
+            start = 1;
+        }
 
-        return String.join("_", java.util.Arrays.copyOf(parts, size)); // e.g. dark_oak
+        return String.join("_", java.util.Arrays.copyOfRange(parts, start, size)); // e.g. dark_oak
     }
 
     public static String convertionLayer(String str){
@@ -159,6 +178,16 @@ public class PickUpWarningUtils {
             return CONVERTION_LAYER_MAP.get(str);
         }
         else{
+            return str;
+        }
+    }
+
+    public static String convertionLayer(String str, String type){
+        if(CONVERTION_LAYER_MAP.containsKey(str)){
+            return CONVERTION_LAYER_MAP.get(str);
+        }
+        else{
+            if(type.equals("carpet") && !str.equals("moss")) return str + "_wool";
             return str;
         }
     }

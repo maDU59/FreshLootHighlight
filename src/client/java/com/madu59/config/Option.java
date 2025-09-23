@@ -52,7 +52,7 @@ public class Option {
 
     public String getValueAsString() {
         if( value instanceof Boolean boolValue) {
-            return boolValue ? I18n.translate("better-compass.config.enabled") : I18n.translate("better-compass.config.disabled");
+            return boolValue ? I18n.translate("fresh-loot-highlight.config.enabled") : I18n.translate("fresh-loot-highlight.config.disabled");
         }
         return I18n.translate(this.value.toString());
     }

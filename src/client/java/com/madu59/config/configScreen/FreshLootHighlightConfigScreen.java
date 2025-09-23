@@ -27,7 +27,11 @@ public class FreshLootHighlightConfigScreen extends Screen {
         this.list = new MyConfigListWidget(this.client, this.width, this.height - 80, 40, 26);
 
         // Example: Add categories + buttons
-        list.addCategory("phantom-clock.config.category");
+        list.addCategory("fresh-loot-highlight.config.category_slot_highlighter");
+        list.addButton(SettingsManager.ENABLE_SLOT_HIGHLIGHTER, btn -> {
+            SettingsManager.ENABLE_SLOT_HIGHLIGHTER.setToNextValue();
+        });
+        list.addCategory("fresh-loot-highlight.config.category_pickup_warning");
         list.addButton(SettingsManager.ENABLE_PICKUP_WARNING, btn -> {
             SettingsManager.ENABLE_PICKUP_WARNING.setToNextValue();
         });
@@ -45,6 +49,9 @@ public class FreshLootHighlightConfigScreen extends Screen {
         }, INDENT);
         list.addButton(SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM, btn -> {
             SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM.setToNextValue();
+        }, INDENT);
+        list.addButton(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR, btn -> {
+            SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.setToNextValue();
         }, INDENT);
 
         ButtonWidget doneButton = ButtonWidget.builder(Text.literal("Done"), b -> {

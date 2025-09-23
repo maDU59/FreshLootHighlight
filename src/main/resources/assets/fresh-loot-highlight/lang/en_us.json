@@ -1,3 +1,47 @@
 {
-    "flh.picked-up-message":"> You picked up "
+    "fresh-loot-highlight.picked-up-message":"> You picked up ",
+
+    "fresh-loot-highlight.config.enable_pickup_warning": "Toggle pickup warnings",
+    "fresh-loot-highlight.config.enable_pickup_warning_desc": "Show a warning when an item is picked up.",
+
+    "fresh-loot-highlight.config.enable_pickup_warning_grouping": "Toggle grouping of pickup warnings",
+    "fresh-loot-highlight.config.enable_pickup_warning_grouping_desc": "Group multiple pickup warnings together within a set time window.",
+
+    "fresh-loot-highlight.config.pickup_warning_timeout": "Select the duration before a warning disappears",
+    "fresh-loot-highlight.config.pickup_warning_timeout_desc": "Duration before a pickup warning disappears.",
+
+    "fresh-loot-highlight.config.pickup_warning_hud_style": "Select the display style of the pickup warnings",
+    "fresh-loot-highlight.config.pickup_warning_hud_style_desc": "Select the display style for the pickup warning HUD.",
+
+    "fresh-loot-highlight.config.pickup_warning_hud_position": "Select the position of the pickup warnings on the HUD",
+    "fresh-loot-highlight.config.pickup_warning_hud_position_desc": "Position of the pickup warning on the HUD.",
+
+    "fresh-loot-highlight.config.pickup_warning_hud_show_item": "Show item representation",
+    "fresh-loot-highlight.config.pickup_warning_hud_show_item_desc": "Show the picked item in the pickup warning HUD.",
+
+    "fresh-loot-highlight.config.enable_slot_highlighter": "Toggle the highlight of newly acquired items in the inventory",
+    "fresh-loot-highlight.config.enable_slot_highlighter_desc": "Highlight inventory slots when new items are added.",
+
+    "fresh-loot-highlight.config.enable_pick_up_warning_narrator": "Toggle the Narrator for pickup warnings",
+    "fresh-loot-highlight.config.enable_pick_up_warning_narrator_desc": "Narrate pickup warnings using the narrator.",
+
+    "fresh-loot-highlight.config.category_slot_highlighter": "Slot Highlighter",
+    "fresh-loot-highlight.config.category_pickup_warning": "Pickup Warning",
+
+    "fresh-loot-highlight.config.enabled":"Enabled",
+    "fresh-loot-highlight.config.disabled":"Disabled",
+
+    "10s": "10s",
+    "5s": "5s",
+    "3s": "3s",
+    "Never": "Never",
+
+    "Default": "Default",
+    "Long": "Long",
+
+    "TOP_LEFT": "Top left",
+    "TOP_RIGHT": "Top right",
+    "BOTTOM_RIGHT": "Bottom right",
+
+    "Only if never seen before": "Only if never seen before"
 }
