@@ -3,7 +3,7 @@
   <h1>Fresh Loot Highlight</h1>
 
   <a href="https://modrinth.com/mod/fresh-loot-highlight"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/kFq8C4hU&logo=modrinth"></a>
-  <a href="https://curseforge.com/minecraft/mc-mods/ptp"><img src="https://cf.way2muchnoise.eu/full_1348647_downloads.svg"></a>
+  <a href="https://curseforge.com/minecraft/mc-mods/fresh-loot-highlight"><img src="https://cf.way2muchnoise.eu/full_1352527_downloads.svg"></a>
 </div>
 
 Fresh Loot Highlight is a utility mod that does multiple things linked to getting new items
