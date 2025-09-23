@@ -18,7 +18,7 @@ Fresh Loot Highlight is a utility mod that does multiple things linked to gettin
 
 To edit the settings of the mod:
 - Use Mod Menu
-- Use commands `/flh setting value`
+- Use commands `/flhConfig setting value`
 - Edit the config file in `.minecraft/config/fresh-loot-highlight.json`
 
 ## 📦 Modpack
