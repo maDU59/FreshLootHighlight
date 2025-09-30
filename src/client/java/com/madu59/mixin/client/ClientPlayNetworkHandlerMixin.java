@@ -6,7 +6,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.network.NetworkThreadUtils;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.listener.TickablePacketListener;
 import net.minecraft.network.packet.s2c.play.ItemPickupAnimationS2CPacket;
@@ -30,7 +29,6 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
     public void onItemPickupAnimation(ItemPickupAnimationS2CPacket packet, CallbackInfo ci) {
         // This method will be executed at the head of injected method.
         // Invoke ahead here do no harm, according to this method's implementation.
-        NetworkThreadUtils.forceMainThread(packet, this, this.client);
 
         ClientPlayerEntity player = this.client.player;
         if (player == null) return;
