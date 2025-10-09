@@ -52,6 +52,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		ClientCommands.register();
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(FreshLootHighlight.MOD_ID, "pick_up_warning_hud"), FreshLootHighlightClient::render);
 

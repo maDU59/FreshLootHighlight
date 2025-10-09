@@ -14,7 +14,7 @@ public class FreshLootHighlightConfigScreen extends Screen {
     private final String INDENT = " ⤷  ";
 
     protected FreshLootHighlightConfigScreen(Screen parent) {
-        super(Text.literal("Phantom Clock config"));
+        super(Text.literal("Fresh Loot Highlight config"));
         this.parent = parent;
     }
 
