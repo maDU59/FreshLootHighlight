@@ -1,4 +1,4 @@
-package com.madu59;
+package fr.madu59;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -20,8 +20,8 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.madu59.config.ClientCommands;
-import com.madu59.config.SettingsManager;
+import fr.madu59.config.ClientCommands;
+import fr.madu59.config.SettingsManager;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

@@ -1,4 +1,4 @@
-package com.madu59.mixin;
+package fr.madu59.mixin;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;

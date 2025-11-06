@@ -1,4 +1,4 @@
-package com.madu59.config;
+package fr.madu59.config;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;

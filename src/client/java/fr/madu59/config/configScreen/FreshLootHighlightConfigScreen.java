@@ -1,9 +1,9 @@
-package com.madu59.config.configScreen;
+package fr.madu59.config.configScreen;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 
-import com.madu59.config.SettingsManager;
+import fr.madu59.config.SettingsManager;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;

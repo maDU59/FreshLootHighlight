@@ -1,4 +1,4 @@
-package com.madu59.config;
+package fr.madu59.config;
 
 import java.util.List;
 

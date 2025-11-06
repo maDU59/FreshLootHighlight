@@ -1,4 +1,4 @@
-package com.madu59;
+package fr.madu59;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static java.util.Map.entry;
 
-import com.madu59.config.SettingsManager;
+import fr.madu59.config.SettingsManager;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
@@ -80,7 +80,7 @@ public class PickUpWarningUtils {
             int id = 0;
             int maxDelay = getDelay(SettingsManager.ENABLE_PICKUP_WARNING_GROUPING.getValueAsString());
             for(PickUpWarning warning: messages){
-                if(isMessageOfSameItem(warning, itemStack.getItemName()) && MinecraftClient.getInstance().inGameHud.getTicks() < warning.creationTick + maxDelay){
+                if(isMessageOfSameItem(warning, name) && MinecraftClient.getInstance().inGameHud.getTicks() < warning.creationTick + maxDelay){
                     count += extractCountFromMessage(warning.message);
                     messages.remove(id);
                     messages.add(new PickUpWarning(item, count));

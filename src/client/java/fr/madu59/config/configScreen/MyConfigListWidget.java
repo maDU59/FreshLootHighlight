@@ -1,8 +1,8 @@
-package com.madu59.config.configScreen;
+package fr.madu59.config.configScreen;
 
 import java.util.List;
 
-import com.madu59.config.Option;
+import fr.madu59.config.Option;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

@@ -1,4 +1,4 @@
-package com.madu59.mixin.client;
+package fr.madu59.mixin.client;
 
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +17,7 @@ import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 
-import com.madu59.FreshLootHighlightClient;
+import fr.madu59.FreshLootHighlightClient;
 
 @Mixin(InGameHud.class)
 public abstract class HotbarScreenMixin {

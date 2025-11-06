@@ -1,4 +1,4 @@
-package com.madu59.mixin.client;
+package fr.madu59.mixin.client;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.madu59.mixin.client;
+package fr.madu59.mixin.client;
 
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -19,7 +19,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 
-import com.madu59.FreshLootHighlightClient;
+import fr.madu59.FreshLootHighlightClient;
 
 @Mixin(CreativeInventoryScreen.class)
 public abstract class CreativeInventoryScreenMixin extends HandledScreen<PlayerScreenHandler> {

@@ -1,4 +1,4 @@
-package com.madu59;
+package fr.madu59;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.NarratorManager;
