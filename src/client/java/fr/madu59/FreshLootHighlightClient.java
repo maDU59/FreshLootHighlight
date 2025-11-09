@@ -82,11 +82,12 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			if(freshSlots.contains(36)){
 				freshSlots.remove((Integer)36);
 			}
+			inv.size();
 
 			Iterator<Integer> slotsIterator = freshSlots.iterator();
 			while (slotsIterator.hasNext()) {
 				int slotId = slotsIterator.next();
-				if (inv.getStack(slotId).isEmpty() || slotId == -1) {
+				if (slotId >= inv.size() || slotId < 0 || inv.getStack(slotId).isEmpty()) {
 					slotsIterator.remove();
 				}
 			}
