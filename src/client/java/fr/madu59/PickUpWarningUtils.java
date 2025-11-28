@@ -200,6 +200,9 @@ public class PickUpWarningUtils {
             Identifier materialTexture = Identifier.of(itemId.getNamespace(), "textures/block/" + material + ".png");
             NativeImage icon = NativeImage.read(rm.getResourceOrThrow(materialTexture).getInputStream());
 
+            int widthMul = icon.getWidth() / 16;
+            int heightMul = icon.getHeight() / 16;
+
             // Load the mask (e.g. fresh-loot-highlight:textures/mask/fence_mask.png)
             Identifier maskId = Identifier.of(FreshLootHighlight.MOD_ID, "textures/mask/" + type + ".png");
             NativeImage mask = NativeImage.read(rm.getResourceOrThrow(maskId).getInputStream());
@@ -213,7 +216,7 @@ public class PickUpWarningUtils {
                     int g = (pixelColor >> 8) & 0xFF;
                     int b = pixelColor & 0xFF;
 
-                    int maskColor = mask.getColorArgb(x, y);
+                    int maskColor = mask.getColorArgb(x/widthMul, y/heightMul);
 
                     float maskAlpha = ((maskColor >> 24) & 0xFF)/255.0f;
 
