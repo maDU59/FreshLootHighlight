@@ -41,11 +41,11 @@ public class MyConfigListWidget extends ElementListWidget<MyConfigListWidget.Ent
     }
 
     public void addButton(Option option, ButtonWidget.PressAction onPress) {
-        this.addEntry(new ButtonEntry(ButtonWidget.builder(Text.literal(option.getValueAsString()), onPress).dimensions(0, 0, 100, 20).build(), option, ""));
+        this.addEntry(new ButtonEntry(ButtonWidget.builder(Text.literal(option.getValueAsTranslatedString()), onPress).dimensions(0, 0, 100, 20).build(), option, ""));
     }
 
     public void addButton(Option option, ButtonWidget.PressAction onPress, String indent) {
-        this.addEntry(new ButtonEntry(ButtonWidget.builder(Text.literal(option.getValueAsString()), onPress).dimensions(0, 0, 100, 20).build(), option, indent));
+        this.addEntry(new ButtonEntry(ButtonWidget.builder(Text.literal(option.getValueAsTranslatedString()), onPress).dimensions(0, 0, 100, 20).build(), option, indent));
     }
 
     // Base entry
@@ -122,7 +122,7 @@ public class MyConfigListWidget extends ElementListWidget<MyConfigListWidget.Ent
                 System.out.println(this.name + " clicked");
                 MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 if(this.option != null){
-                    this.button.setMessage(Text.literal(this.option.getValueAsString()));
+                    this.button.setMessage(Text.literal(this.option.getValueAsTranslatedString()));
                 }
                 return true;
             }

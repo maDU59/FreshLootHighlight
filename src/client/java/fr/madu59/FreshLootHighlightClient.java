@@ -2,7 +2,6 @@ package fr.madu59;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.render.RenderTickCounter;
@@ -15,6 +14,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.joml.Matrix3x2fStack;
+
 import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
@@ -150,15 +152,16 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		}
 
 		for(PickUpWarning pickUpWarning: pickUpMessages){
-			int entryWidth = textRenderer.getWidth(pickUpWarning.message);
-			Identifier textureId = pickUpWarning.textureId;
 			boolean showItem = (boolean) SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM.getValue();
-			if(showItem && textureId == null){
-				textureId = PickUpWarningUtils.getItemTexture(pickUpWarning.item);
-			}
+			int entryWidth = textRenderer.getWidth(pickUpWarning.message) + (showItem? 11: 0);
 			entryX = isAlignedLeft? context.getScaledWindowWidth() - entryWidth : 0;
-			context.fill(entryX, entryY, entryX + entryWidth + (showItem? 11: 0), entryY  + tileSizeY, 0x99000000);
-			if(showItem) context.drawTexture(RenderPipelines.GUI_TEXTURED, textureId, entryX + 2, entryY + 2, 0, 0, 7, 7, 7, 7);
+			context.fill(entryX, entryY, entryX + entryWidth, entryY  + tileSizeY, 0x99000000);
+			Matrix3x2fStack matrices = context.getMatrices();
+			if(showItem){
+				matrices.scale(0.5F);
+				context.drawItemWithoutEntity(pickUpWarning.itemStack, (int)((entryX + 1.5) * 2), (int)((entryY + 1.5) * 2));
+				matrices.scale(2F);
+			}
 			context.drawText(textRenderer, pickUpWarning.message, entryX + (showItem? 11: 0), entryY + (tileSizeY - textRenderer.fontHeight)/2 + 1, 0xFFFFFFFF, false);
 			entryY += tileSizeY;
 		}

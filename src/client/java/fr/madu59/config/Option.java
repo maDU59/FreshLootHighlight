@@ -50,11 +50,18 @@ public class Option {
         return this.possibleValues;
     }
 
-    public String getValueAsString() {
+    public String getValueAsTranslatedString() {
         if( value instanceof Boolean boolValue) {
             return boolValue ? I18n.translate("fresh-loot-highlight.config.enabled") : I18n.translate("fresh-loot-highlight.config.disabled");
         }
         return I18n.translate(this.value.toString());
+    }
+
+    public String getValueAsString() {
+        if( value instanceof Boolean boolValue) {
+            return boolValue ? "Enabled" : "Disabled";
+        }
+        return this.value.toString();
     }
 
     public int getValueAsIndex(){
