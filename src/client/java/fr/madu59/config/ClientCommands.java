@@ -2,9 +2,10 @@ package fr.madu59.config;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.command.CommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
+
 import com.mojang.brigadier.arguments.StringArgumentType;
 
 public class ClientCommands {
@@ -12,15 +13,15 @@ public class ClientCommands {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
                 literal("flhConfig")
-                    .then(argument("option", StringArgumentType.string()).suggests((context, builder) -> { return CommandSource.suggestMatching(SettingsManager.getAllOptionsId(), builder);})
-                        .then(argument("value", StringArgumentType.string()).suggests((context, builder) -> { return CommandSource.suggestMatching(SettingsManager.getOptionPossibleValues(StringArgumentType.getString(context, "option")), builder);})
+                    .then(argument("option", StringArgumentType.string()).suggests((context, builder) -> { return SharedSuggestionProvider.suggest(SettingsManager.getAllOptionsId(), builder);})
+                        .then(argument("value", StringArgumentType.string()).suggests((context, builder) -> { return SharedSuggestionProvider.suggest(SettingsManager.getOptionPossibleValues(StringArgumentType.getString(context, "option")), builder);})
                             .executes(context -> {
                                 String option = StringArgumentType.getString(context, "option");
                                 String value = StringArgumentType.getString(context, "value");
 
                                 boolean success = SettingsManager.setOptionValue(option, (Object) value);
-                                MinecraftClient.getInstance().player.sendMessage(
-                                    Text.literal(success ? "Updated " + option + " to " + value : "Failed to update setting."),
+                                Minecraft.getInstance().player.displayClientMessage(
+                                    Component.literal(success ? "Updated " + option + " to " + value : "Failed to update setting."),
                                     false
                                 );
                                 if(success){

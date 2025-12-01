@@ -1,13 +1,13 @@
 package fr.madu59;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class PickUpWarning {
 
-    public Text message;
+    public Component message;
     public ItemStack itemStack;
     public int count;
     public Item item;
@@ -18,14 +18,14 @@ public class PickUpWarning {
         this.count = itemStack.getCount();
         this.item = itemStack.getItem();
         this.message = PickUpWarningUtils.createMessage(this.item, this.count);
-        this.creationTick = MinecraftClient.getInstance().inGameHud.getTicks();
+        this.creationTick = Minecraft.getInstance().gui.getGuiTicks();
     }
 
     public PickUpWarning(Item item, int count){
-        this.itemStack = item.getDefaultStack();
+        this.itemStack = item.getDefaultInstance();
         this.count = count;
         this.item = item;
         this.message = PickUpWarningUtils.createMessage(this.item, this.count);
-        this.creationTick = MinecraftClient.getInstance().inGameHud.getTicks();
+        this.creationTick = Minecraft.getInstance().gui.getGuiTicks();
     }
 }

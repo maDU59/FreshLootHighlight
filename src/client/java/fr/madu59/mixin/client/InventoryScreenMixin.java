@@ -1,39 +1,36 @@
 package fr.madu59.mixin.client;
 
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
-
 import fr.madu59.FreshLootHighlightClient;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 
 @Mixin(InventoryScreen.class)
-public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHandler> {
+public abstract class InventoryScreenMixin extends AbstractContainerScreen<InventoryMenu> {
 
-    public InventoryScreenMixin(PlayerScreenHandler handler, PlayerInventory inventory, Text title) {
+    public InventoryScreenMixin(InventoryMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void drawNewItemBadges(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void drawNewItemBadges(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         InventoryScreen screen = (InventoryScreen) (Object) this;
 
-        for(int i = 0; i < screen.getScreenHandler().slots.size(); i++) {
-            Slot slot = screen.getScreenHandler().slots.get(i);
+        for(int i = 0; i < screen.getMenu().slots.size(); i++) {
+            Slot slot = screen.getMenu().slots.get(i);
 
             int inventoryIndex;
 			if(i >= 9 && i <= 35) {
@@ -48,22 +45,22 @@ public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHan
 				inventoryIndex = -1; // crafting, skip
 			}
 
-            Identifier exclamationMarkTexture = Identifier.of("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-            Identifier exclamationMarkTextureAlt = Identifier.of("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
+            Identifier exclamationMarkTexture = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+            Identifier exclamationMarkTextureAlt = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
 
 
             if(FreshLootHighlightClient.freshSlots.contains(inventoryIndex)) {
 
-                Item item = MinecraftClient.getInstance().player.getInventory().getStack(inventoryIndex).getItem();
-                Identifier itemId = Registries.ITEM.getId(item);
+                Item item = Minecraft.getInstance().player.getInventory().getItem(inventoryIndex).getItem();
+                Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
                 boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);
 
                 // Slot screen coordinates
-                int x = slot.x + this.x;
-                int y = slot.y + this.y;
+                int x = slot.x + this.leftPos;
+                int y = slot.y + this.topPos;
 
                 // Display exlamation mark
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
+                context.blit(RenderPipelines.GUI_TEXTURED, isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
 
                 // Delete from fresh list on hovering
                 if(mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {

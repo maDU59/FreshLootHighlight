@@ -1,18 +1,17 @@
 package fr.madu59.mixin.client;
 
 import java.util.List;
-
+import net.minecraft.client.GuiMessage;
+import net.minecraft.client.gui.components.ChatComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import net.minecraft.client.gui.hud.ChatHud;
-import net.minecraft.client.gui.hud.ChatHudLine;
 
-@Mixin(ChatHud.class)
+@Mixin(ChatComponent.class)
 public interface ChatHudAccessor {
 
-    @Accessor("visibleMessages")
-    List<ChatHudLine.Visible> getVisibleMessages();
+    @Accessor("trimmedMessages")
+    List<GuiMessage.Line> getVisibleMessages();
 
-    @Accessor("messages")
-    List<ChatHudLine> getMessages();
+    @Accessor("allMessages")
+    List<GuiMessage> getMessages();
 }

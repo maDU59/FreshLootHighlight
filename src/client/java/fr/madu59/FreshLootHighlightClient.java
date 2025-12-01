@@ -1,11 +1,5 @@
 package fr.madu59;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.render.RenderTickCounter;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -31,12 +25,17 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.WorldSavePath;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.LevelResource;
 
 public class FreshLootHighlightClient implements ClientModInitializer {
 
@@ -44,7 +43,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	 * Test for previous versions compatibility
 	 */
 
-	private static final MinecraftClient CLIENT = MinecraftClient.getInstance();
+	private static final Minecraft CLIENT = Minecraft.getInstance();
 	public static List<Integer> freshSlots = new ArrayList<Integer>();
 	public static List<PickUpWarning> pickUpMessages = new ArrayList<PickUpWarning>();
 	public static String serverId = "NoWorldOrServer";
@@ -56,18 +55,18 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientCommands.register();
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
-		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(FreshLootHighlight.MOD_ID, "pick_up_warning_hud"), FreshLootHighlightClient::render);
+		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath(FreshLootHighlight.MOD_ID, "pick_up_warning_hud"), FreshLootHighlightClient::render);
 
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			// This runs when the client enters a world
 
-			if (CLIENT.getServer() == null) {
+			if (CLIENT.getSingleplayerServer() == null) {
 				// Multiplayer
-				ServerInfo info = CLIENT.getCurrentServerEntry();
-				serverId = info != null ? info.address.replace(":", "_") : "unknown_server";
+				ServerData info = CLIENT.getCurrentServer();
+				serverId = info != null ? info.ip.replace(":", "_") : "unknown_server";
 			} else {
 				// Singleplayer
-				serverId = CLIENT.getServer().getSavePath(WorldSavePath.ROOT)
+				serverId = CLIENT.getSingleplayerServer().getWorldPath(LevelResource.ROOT)
 					.getParent().getFileName().toString();
 			}
 			loadAlreadyFound();
@@ -75,21 +74,21 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if(client.player == null) return;
-			PlayerInventory inv = client.player.getInventory();
+			Inventory inv = client.player.getInventory();
 			if(inv == null) return;
 			if(freshSlots.contains(inv.getSelectedSlot())){
-				freshSlots.remove((Integer)inv.getSelectedSlot());
-				FreshLootHighlightClient.foundForTheFirstTime.remove(Registries.ITEM.getId(inv.getSelectedStack().getItem()));
+				freshSlots.remove(Integer.valueOf(inv.getSelectedSlot()));
+				FreshLootHighlightClient.foundForTheFirstTime.remove(BuiltInRegistries.ITEM.getKey(inv.getSelectedItem().getItem()));
 			}
 			if(freshSlots.contains(36)){
 				freshSlots.remove((Integer)36);
 			}
-			inv.size();
+			inv.getContainerSize();
 
 			Iterator<Integer> slotsIterator = freshSlots.iterator();
 			while (slotsIterator.hasNext()) {
 				int slotId = slotsIterator.next();
-				if (slotId >= inv.size() || slotId < 0 || inv.getStack(slotId).isEmpty()) {
+				if (slotId >= inv.getContainerSize() || slotId < 0 || inv.getItem(slotId).isEmpty()) {
 					slotsIterator.remove();
 				}
 			}
@@ -97,7 +96,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			Iterator<PickUpWarning> messagesIterator = pickUpMessages.iterator();
 			int delay = PickUpWarningUtils.getDelay(SettingsManager.PICKUP_WARNING_TIMEOUT.getValueAsString());
 			while (messagesIterator.hasNext()) {
-				if (CLIENT.inGameHud.getTicks() > delay + messagesIterator.next().creationTick) {
+				if (CLIENT.gui.getGuiTicks() > delay + messagesIterator.next().creationTick) {
 					messagesIterator.remove();
 				}
 			}
@@ -107,7 +106,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	static public void onPickUpEvent(ItemStack pickedUpItemStack) {
 		if(CLIENT.player == null) return;
 
-		PlayerInventory inv = CLIENT.player.getInventory();
+		Inventory inv = CLIENT.player.getInventory();
 		int count = pickedUpItemStack.getCount();
 		Item item = pickedUpItemStack.getItem();
 
@@ -115,37 +114,37 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			pickUpMessages = PickUpWarningUtils.AddOrEditMessage(pickedUpItemStack, pickUpMessages);
 		}
 
-		for(int i = 0; i < inv.size(); i++) {
-			ItemStack stack = inv.getStack(i);
+		for(int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if(stack.getItem() == pickedUpItemStack.getItem()) {
-				count -= stack.getMaxCount() - stack.getCount();
+				count -= stack.getMaxStackSize() - stack.getCount();
 				if(count < 0){
 					return;
 				}
 			}
 		}
 
-		Identifier itemId = Registries.ITEM.getId(item);
+		Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
 		if(alreadyFound.contains(itemId) && Boolean.TRUE.equals(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue())){
-			freshSlots.add(inv.getEmptySlot());
+			freshSlots.add(inv.getFreeSlot());
 		}
 		else if(!Boolean.FALSE.equals(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue())){
 			alreadyFound.add(itemId);
-			freshSlots.add(inv.getEmptySlot());
+			freshSlots.add(inv.getFreeSlot());
 			foundForTheFirstTime.add(itemId);
 			saveAlreadyFound();
 		}
 	}
 
-	private static void render(DrawContext context, RenderTickCounter tickCounter){
-		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+	private static void render(GuiGraphics context, DeltaTracker tickCounter){
+		Font textRenderer = Minecraft.getInstance().font;
 		int entryX = 0;
 		int entryY = 0;
 		int tileSizeY = 11;
 		boolean isAlignedLeft = false;
 		String position = SettingsManager.PICKUP_WARNING_HUD_POSITION.getValueAsString();
 		if(position.equals("BOTTOM_RIGHT")){
-			entryY = context.getScaledWindowHeight() - tileSizeY * pickUpMessages.size();
+			entryY = context.guiHeight() - tileSizeY * pickUpMessages.size();
 		}
 		if(position.equals("BOTTOM_RIGHT") || position.equals("TOP_RIGHT")){
 			isAlignedLeft = true;
@@ -153,16 +152,16 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 
 		for(PickUpWarning pickUpWarning: pickUpMessages){
 			boolean showItem = (boolean) SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM.getValue();
-			int entryWidth = textRenderer.getWidth(pickUpWarning.message) + (showItem? 11: 0);
-			entryX = isAlignedLeft? context.getScaledWindowWidth() - entryWidth : 0;
+			int entryWidth = textRenderer.width(pickUpWarning.message) + (showItem? 11: 0);
+			entryX = isAlignedLeft? context.guiWidth() - entryWidth : 0;
 			context.fill(entryX, entryY, entryX + entryWidth, entryY  + tileSizeY, 0x99000000);
-			Matrix3x2fStack matrices = context.getMatrices();
+			Matrix3x2fStack matrices = context.pose();
 			if(showItem){
 				matrices.scale(0.5F);
-				context.drawItemWithoutEntity(pickUpWarning.itemStack, (int)((entryX + 1.5) * 2), (int)((entryY + 1.5) * 2));
+				context.renderFakeItem(pickUpWarning.itemStack, (int)((entryX + 1.5) * 2), (int)((entryY + 1.5) * 2));
 				matrices.scale(2F);
 			}
-			context.drawText(textRenderer, pickUpWarning.message, entryX + (showItem? 11: 0), entryY + (tileSizeY - textRenderer.fontHeight)/2 + 1, 0xFFFFFFFF, false);
+			context.drawString(textRenderer, pickUpWarning.message, entryX + (showItem? 11: 0), entryY + (tileSizeY - textRenderer.lineHeight)/2 + 1, 0xFFFFFFFF, false);
 			entryY += tileSizeY;
 		}
 	}
@@ -187,7 +186,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
         try (Reader reader = Files.newBufferedReader(path)) {
             Type listType = new TypeToken<List<String>>(){}.getType();
             List<String> raw = GSON.fromJson(reader, listType);
-          	alreadyFound = new ArrayList<>(raw.stream().map(Identifier::of).toList());
+          	alreadyFound = new ArrayList<>(raw.stream().map(Identifier::parse).toList());
         }
 		catch(Exception e) {
 			System.out.println(e);
