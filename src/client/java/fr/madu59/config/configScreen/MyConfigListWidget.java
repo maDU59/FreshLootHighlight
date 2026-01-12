@@ -162,7 +162,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
             this.button.setX(this.getContentWidth() - this.button.getWidth() - 10);
             this.button.render(context, mouseX, mouseY, tickDelta);
 
-            if(this.description == null) return;
+            if(this.name == null) return;
 
             Font textRenderer = Minecraft.getInstance().font;
             context.drawString(textRenderer, Component.literal(indent + this.name), 10, this.getContentY() + (this.getContentHeight() - textRenderer.lineHeight) / 2, 0xFFFFFFFF, true);
@@ -181,7 +181,6 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
         @Override
         public boolean mouseClicked(MouseButtonEvent click, boolean doubleClick) {
             if (this.button.mouseClicked(click, doubleClick)) {
-                System.out.println(this.name + " clicked");
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 if(this.option != null){
                     this.button.setMessage(Component.literal(this.option.getValueAsTranslatedString()));
@@ -212,7 +211,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
             this.slider.setX(this.getContentWidth() - this.slider.getWidth() - 10);
             this.slider.render(context, mouseX, mouseY, tickDelta);
 
-            if(this.description == null) return;
+            if(this.name == null) return;
 
             Font textRenderer = Minecraft.getInstance().font;
             context.drawString(textRenderer, Component.literal(indent + this.name), 10, this.getContentY() + (this.getContentHeight() - textRenderer.lineHeight) / 2, 0xFFFFFFFF, true);
