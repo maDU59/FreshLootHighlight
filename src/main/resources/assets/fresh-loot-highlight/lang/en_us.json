@@ -4,10 +4,10 @@
     "fresh-loot-highlight.config.enable_pickup_warning": "Toggle pickup warnings",
     "fresh-loot-highlight.config.enable_pickup_warning_desc": "Show a warning when an item is picked up.",
 
-    "fresh-loot-highlight.config.enable_pickup_warning_grouping": "Duration thresholt for grouping of pickup warnings",
+    "fresh-loot-highlight.config.enable_pickup_warning_grouping": "Duration in seconds before warnings stop merging",
     "fresh-loot-highlight.config.enable_pickup_warning_grouping_desc": "Group multiple pickup warnings together within a set time window.",
 
-    "fresh-loot-highlight.config.pickup_warning_timeout": "Duration before warnings disappear",
+    "fresh-loot-highlight.config.pickup_warning_timeout": "Duration in seconds before warnings disappear",
     "fresh-loot-highlight.config.pickup_warning_timeout_desc": "Duration before a pickup warning disappears.",
 
     "fresh-loot-highlight.config.pickup_warning_hud_style": "Display style of the pickup warnings",
