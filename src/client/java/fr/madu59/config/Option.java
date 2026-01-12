@@ -3,21 +3,18 @@ package fr.madu59.config;
 import java.util.List;
 import net.minecraft.client.resources.language.I18n;
 
-public class Option {
+public class Option<T> {
     public String id;
     public String name;
     public String description;
-    public Object value;
-    public Object defaultValue;
-    public List<Object> possibleValues;
+    public T value;
+    public T defaultValue;
 
-    public Option(String id, String name, String description, Object value, Object defaultValue, List<Object> possibleValues) {
+    public Option(String id, String name, String description, T value, T defaultValue) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.value = value;
-        this.defaultValue = defaultValue;
-        this.possibleValues = possibleValues;
         SettingsManager.ALL_OPTIONS.add(this);
     }
 
@@ -25,11 +22,11 @@ public class Option {
         this.value = this.defaultValue;
     }
 
-    public void setValue(Object newValue) {
+    public void setValue(T newValue) {
         this.value = newValue;
     }
 
-    public Object getValue() {
+    public T getValue() {
         return this.value;
     }
 
@@ -45,8 +42,14 @@ public class Option {
         return I18n.get(this.description);
     }
 
-    public List<Object> getPossibleValues(){
-        return this.possibleValues;
+    public List<?> getPossibleValues(){
+        if(this.value instanceof Boolean){
+            return List.of(true, false);
+        }
+        if(this.value instanceof Enum<?> enumValue){
+            return List.of(enumValue.getDeclaringClass().getEnumConstants());
+        }
+        else return List.of();
     }
 
     public String getValueAsTranslatedString() {
@@ -63,20 +66,21 @@ public class Option {
         return this.value.toString();
     }
 
-    public int getValueAsIndex(){
-        return possibleValues.indexOf(value);
-    }
-
     public void setToNextValue() {
-        if (possibleValues != null && !possibleValues.isEmpty()) {
-            int currentIndex = possibleValues.indexOf(value);
-            int nextIndex = (currentIndex + 1) % possibleValues.size();
-            value = possibleValues.get(nextIndex);
-        }
+        this.value = cycle(this.value);
     }
 
-    public void setPossibleValues(List<Object> possibleValues){
-        this.possibleValues = possibleValues;
+    @SuppressWarnings("unchecked")
+    public T cycle(T value) {
+        if (value instanceof Enum<?> enumValue) {
+            Enum<?>[] constants = enumValue.getDeclaringClass().getEnumConstants();
+            int nextOrdinal = (enumValue.ordinal() + 1) % constants.length;
+            return (T) constants[nextOrdinal];
+        }
+        else if (value instanceof Boolean boolValue) {
+           return (T) Boolean.valueOf(!boolValue);
+        }
+        else return null;
     }
 
     public void setName(String name){
@@ -84,5 +88,22 @@ public class Option {
     }
     public void setDescription(String description){
         this.description = description;
+    }
+
+    public static enum WarningStyle{
+        DEFAULT,
+        LONG
+    }
+
+    public static enum WarningPosition{
+        TOP_RIGHT,
+        TOP_LEFT,
+        BOTTOM_RIGHT
+    }
+
+    public static enum SlotHighlighterToggle{
+        ALWAYS,
+        ONLY_IF_NEVER_SEEN_BEFORE,
+        NEVER
     }
 }

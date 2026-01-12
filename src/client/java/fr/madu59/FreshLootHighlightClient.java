@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import fr.madu59.config.ClientCommands;
+import fr.madu59.config.Option;
 import fr.madu59.config.SettingsManager;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -94,7 +95,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			}
 
 			Iterator<PickUpWarning> messagesIterator = pickUpMessages.iterator();
-			int delay = PickUpWarningUtils.getDelay(SettingsManager.PICKUP_WARNING_TIMEOUT.getValueAsString());
+			float delay = SettingsManager.PICKUP_WARNING_TIMEOUT.getValue() * 20;
 			while (messagesIterator.hasNext()) {
 				if (CLIENT.gui.getGuiTicks() > delay + messagesIterator.next().creationTick) {
 					messagesIterator.remove();
@@ -110,7 +111,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		int count = pickedUpItemStack.getCount();
 		Item item = pickedUpItemStack.getItem();
 
-		if(Boolean.TRUE.equals(SettingsManager.ENABLE_PICKUP_WARNING.getValue())){
+		if(SettingsManager.ENABLE_PICKUP_WARNING.getValue()){
 			pickUpMessages = PickUpWarningUtils.AddOrEditMessage(pickedUpItemStack, pickUpMessages);
 		}
 
@@ -125,10 +126,10 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		}
 
 		Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
-		if(alreadyFound.contains(itemId) && Boolean.TRUE.equals(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue())){
+		if(alreadyFound.contains(itemId) && SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == Option.SlotHighlighterToggle.ALWAYS){
 			freshSlots.add(inv.getFreeSlot());
 		}
-		else if(!Boolean.FALSE.equals(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue())){
+		else if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() != Option.SlotHighlighterToggle.NEVER){
 			alreadyFound.add(itemId);
 			freshSlots.add(inv.getFreeSlot());
 			foundForTheFirstTime.add(itemId);
@@ -142,16 +143,16 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		int entryY = 0;
 		int tileSizeY = 11;
 		boolean isAlignedLeft = false;
-		String position = SettingsManager.PICKUP_WARNING_HUD_POSITION.getValueAsString();
-		if(position.equals("BOTTOM_RIGHT")){
+		Option.WarningPosition position = SettingsManager.PICKUP_WARNING_HUD_POSITION.getValue();
+		if(position == Option.WarningPosition.BOTTOM_RIGHT){
 			entryY = context.guiHeight() - tileSizeY * pickUpMessages.size();
 		}
-		if(position.equals("BOTTOM_RIGHT") || position.equals("TOP_RIGHT")){
+		if(position == Option.WarningPosition.BOTTOM_RIGHT || position == Option.WarningPosition.TOP_RIGHT){
 			isAlignedLeft = true;
 		}
 
 		for(PickUpWarning pickUpWarning: pickUpMessages){
-			boolean showItem = (boolean) SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM.getValue();
+			boolean showItem = SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM.getValue();
 			int entryWidth = textRenderer.width(pickUpWarning.message) + (showItem? 11: 0);
 			entryX = isAlignedLeft? context.guiWidth() - entryWidth : 0;
 			context.fill(entryX, entryY, entryX + entryWidth, entryY  + tileSizeY, 0x99000000);

@@ -15,100 +15,101 @@ import java.util.stream.Collectors;
 
 public class SettingsManager {
 
-    public static List<Option> ALL_OPTIONS = new ArrayList<>();
+    public static List<Option<?>> ALL_OPTIONS = new ArrayList<>();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(FreshLootHighlight.MOD_ID + ".json");
+    private static Map<String, String> loadedSettings = loadSettings();
 
-    public static Option ENABLE_PICKUP_WARNING = loadOptionWithDefaults(
+    public static Option<Boolean> ENABLE_PICKUP_WARNING = loadOptionWithDefaults(
         "ENABLE_PICKUP_WARNING",
         "fresh-loot-highlight.config.enable_pickup_warning",
         "fresh-loot-highlight.config.enable_pickup_warning_desc",
-        true,
-        true,
-        List.of(true,false)
+        true
     );
 
-    public static Option ENABLE_PICKUP_WARNING_GROUPING = loadOptionWithDefaults(
+    public static Option<Float> PICKUP_WARNING_GROUPING_TIMEOUT = loadOptionWithDefaults(
         "ENABLE_PICKUP_WARNING_GROUPING",
         "fresh-loot-highlight.config.enable_pickup_warning_grouping",
         "fresh-loot-highlight.config.enable_pickup_warning_grouping_desc",
-        "10s",
-        "10s",
-        List.of("10s","5s","3s","Never")
+        8f
     );
 
-    public static Option PICKUP_WARNING_TIMEOUT = loadOptionWithDefaults(
+    public static Option<Float> PICKUP_WARNING_TIMEOUT = loadOptionWithDefaults(
         "PICKUP_WARNING_TIMEOUT",
         "fresh-loot-highlight.config.pickup_warning_timeout",
         "fresh-loot-highlight.config.pickup_warning_timeout_desc",
-        "10s",
-        "10s",
-        List.of("10s","5s","3s")
+        8f
     );
 
-    public static Option PICKUP_WARNING_STYLE = loadOptionWithDefaults(
+    public static Option<Option.WarningStyle> PICKUP_WARNING_STYLE = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_STYLE",
         "fresh-loot-highlight.config.pickup_warning_hud_style",
         "fresh-loot-highlight.config.pickup_warning_hud_style_desc",
-        "Default",
-        "Default",
-        List.of("Default","Long")
+        Option.WarningStyle.DEFAULT
     );
 
-    public static Option PICKUP_WARNING_HUD_POSITION = loadOptionWithDefaults(
+    public static Option<Option.WarningPosition> PICKUP_WARNING_HUD_POSITION = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_POSITION",
         "fresh-loot-highlight.config.pickup_warning_hud_position",
         "fresh-loot-highlight.config.pickup_warning_hud_position_desc",
-        "TOP_LEFT",
-        "TOP_LEFT",
-        List.of("TOP_LEFT","TOP_RIGHT","BOTTOM_RIGHT")
+        Option.WarningPosition.TOP_LEFT
     );
 
-    public static Option PICKUP_WARNING_HUD_SHOW_ITEM = loadOptionWithDefaults(
+    public static Option<Boolean> PICKUP_WARNING_HUD_SHOW_ITEM = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_SHOW_ITEM",
         "fresh-loot-highlight.config.pickup_warning_hud_show_item",
         "fresh-loot-highlight.config.pickup_warning_hud_show_item_desc",
-        true,
-        true,
-        List.of(true, false)
+        true
     );
 
-    public static Option ENABLE_SLOT_HIGHLIGHTER = loadOptionWithDefaults(
+    public static Option<Option.SlotHighlighterToggle> ENABLE_SLOT_HIGHLIGHTER = loadOptionWithDefaults(
         "ENABLE_SLOT_HIGHLIGHTER",
         "fresh-loot-highlight.config.enable_slot_highlighter",
         "fresh-loot-highlight.config.enable_slot_highlighter_desc",
-        true,
-        true,
-        List.of(true, "Only if never seen before", false)
+        Option.SlotHighlighterToggle.ALWAYS
     );
 
-    public static Option ENABLE_PICK_UP_WARNING_NARRATOR = loadOptionWithDefaults(
+    public static Option<Boolean> ENABLE_PICK_UP_WARNING_NARRATOR = loadOptionWithDefaults(
         "ENABLE_PICK_UP_WARNING_NARRATOR",
         "fresh-loot-highlight.config.enable_pick_up_warning_narrator",
         "fresh-loot-highlight.config.enable_pick_up_warning_narrator_desc",
-        true,
-        true,
-        List.of(true, false)
+        true
     );
 
     public static List<String> getAllOptionsId(){
         List<String> list = new ArrayList<>();
-        for (Option option : ALL_OPTIONS){
+        for (Option<?> option : ALL_OPTIONS){
             list.add(option.getId());
             }
         return list;
     }
 
-    public static boolean setOptionValue(String optionId, Object value){
-        for (Option option : ALL_OPTIONS){
+    public static <T> boolean setOptionValue(String optionId, String value){
+        for (Option<?> option : ALL_OPTIONS){
             if(option.getId().equalsIgnoreCase(optionId)){
-                int index = option.getPossibleValues().stream().map(Object::toString).collect(Collectors.toList()).indexOf((String) value);
-                if (option.getPossibleValues().contains(value)){
-                    option.setValue(value);
-                    return true;
+                if (option.value instanceof Float){
+                    try{
+                        Float floatVal = Float.parseFloat(value);
+                        setOptionValueHelper(option, floatVal);
+                        return true;
+                    }
+                    catch(Exception e){ 
+                        return false;
+                    }
                 }
-                else if(index != -1){
-                    option.setValue(option.getPossibleValues().get(index));
+                else if (option.value instanceof Enum<?> en){
+                    try{
+                        Enum<?> enumValue = Enum.valueOf(en.getDeclaringClass(), value);
+                        setOptionValueHelper(option, enumValue);
+                        return true;
+                    }
+                    catch(Exception e){ 
+                        return false;
+                    }
+                }
+                else if (option.value instanceof Boolean){
+                    Boolean boolValue = Boolean.valueOf(value);
+                    setOptionValueHelper(option, boolValue);
                     return true;
                 }
             }
@@ -116,8 +117,13 @@ public class SettingsManager {
         return false;
     }
 
-    public static List<String> getOptionPossibleValues(String optionId){
-        for (Option option : ALL_OPTIONS){
+    @SuppressWarnings("unchecked")
+    private static <T> void setOptionValueHelper(Option<T> option, Object value) {
+        option.setValue((T) value);
+    }
+
+    public static <T> List<String> getOptionPossibleValues(String optionId){
+        for (Option<?> option : ALL_OPTIONS){
             if (option.getId().equalsIgnoreCase(optionId)){
                 return option.getPossibleValues().stream().map(Object::toString).collect(Collectors.toList());
             }
@@ -193,8 +199,8 @@ public class SettingsManager {
         return new int[] {red, green, blue};
     }
 
-    public static void saveSettings(List<Option> options) {
-        Map<String, Option> map = toMap(options);
+        public static void saveSettings(List<Option<?>> options) {
+        Map<String, String> map = toMap(options);
         try {
             Files.createDirectories(CONFIG_PATH.getParent());
             try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
@@ -205,43 +211,47 @@ public class SettingsManager {
         }
     }
 
-    private static Map<String, Option> toMap(List<Option> options) {
-        Map<String, Option> map = new LinkedHashMap<>();
-        for (Option option : options) {
-            map.put(option.getId(), option);
+    private static Map<String, String> toMap(List<Option<?>> options) {
+        Map<String, String> map = new LinkedHashMap<>();
+        for (Option<?> option : options) {
+            map.put(option.getId(), option.value.toString());
         }
         return map;
     }
 
-    private static Option loadOption(String key) {
+    private static Map<String, String> loadSettings() {
         try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
-            Type type = new TypeToken<Map<String, Option>>() {}.getType();
-            Map<String, Option> map = GSON.fromJson(reader, type);
-            return map.get(key);
+            Type type = new TypeToken<Map<String, String>>() {}.getType();
+            Map<String, String> map = GSON.fromJson(reader, type);
+            return map;
         } catch (Exception e) {
             FreshLootHighlight.LOGGER.info("[FreshLootHighlight] Config file not found or invalid, using default");
             return null;
         }
     }
 
-    private static Option loadOptionWithDefaults(String id, String name, String description, Object value, Object defaultValue, List<Object> possibleValues) {
-        Option loadedOption = loadOption(id);
-        if (loadedOption == null) {
-            return new Option(
-                    id,
-                    name,
-                    description,
-                    value,
-                    defaultValue,
-                    possibleValues
-            );
-        } else {
-            loadedOption.setPossibleValues(possibleValues);
-            loadedOption.setName(name);
-            loadedOption.setDescription(description);
-            SettingsManager.ALL_OPTIONS.add(loadedOption);
-            return loadedOption;
+    @SuppressWarnings("unchecked")
+    private static <T> T getOptionValue(String key, T defaultValue) {
+        if (loadedSettings == null || !loadedSettings.containsKey(key)) return null;
+        else if (defaultValue instanceof Enum<?> e){
+            return (T) Enum.valueOf(e.getDeclaringClass(), loadedSettings.get(key));
         }
+        else if (defaultValue instanceof Float){
+            return (T) Float.valueOf(loadedSettings.get(key));
+        }
+        else return null;
     }
-    
+
+    private static <T> Option<T> loadOptionWithDefaults(String id, String name, String description, T defaultValue) {
+        T optionValue= getOptionValue(id, defaultValue);
+        if (optionValue == null) optionValue = defaultValue;
+        Option<T> option = new Option<T>(
+                id,
+                name,
+                description,
+                optionValue,
+                defaultValue
+        );
+        return option;
+    }
 }

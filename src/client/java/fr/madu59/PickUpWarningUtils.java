@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import fr.madu59.config.Option;
 import fr.madu59.config.SettingsManager;
 
 public class PickUpWarningUtils {
@@ -22,7 +23,7 @@ public class PickUpWarningUtils {
     }
 
     public static Component createMessage(Component name, int count, boolean forceLong){
-        if(forceLong || SettingsManager.PICKUP_WARNING_STYLE.getValueAsString().equals("Long")){
+        if(forceLong || SettingsManager.PICKUP_WARNING_STYLE.getValue() == Option.WarningStyle.LONG){
             return Component.translatable("fresh-loot-highlight.picked-up-message").append(Component.literal(String.valueOf(count))).append(" ").append(name);
         }
         else{
@@ -34,22 +35,22 @@ public class PickUpWarningUtils {
         int count = itemStack.getCount();
         Component name = itemStack.getItemName();
         Item item = itemStack.getItem();
-        if(!SettingsManager.ENABLE_PICKUP_WARNING_GROUPING.getValueAsString().equals("Never")){
+        if(SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT.getValue() != 0f){
             int id = 0;
-            int maxDelay = getDelay(SettingsManager.ENABLE_PICKUP_WARNING_GROUPING.getValueAsString());
+            float maxDelay = SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT.getValue() * 20;
             for(PickUpWarning warning: messages){
                 if(isMessageOfSameItem(warning, name) && Minecraft.getInstance().gui.getGuiTicks() < warning.creationTick + maxDelay){
                     count += extractCountFromMessage(warning.message);
                     messages.remove(id);
                     messages.add(new PickUpWarning(item, count));
-                    if(Boolean.TRUE.equals(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue())) NarratorUtils.narrate(createMessage(item.getName(), count, true));
+                    if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(item.getName(), count, true));
                     return messages;
                 }
                 id++;
             }
         }
         messages.add(new PickUpWarning(item, count));
-        if(Boolean.TRUE.equals(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue())) NarratorUtils.narrate(createMessage(item.getName(), count, true));
+        if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(item.getName(), count, true));
         return messages;
     }
 
@@ -64,17 +65,6 @@ public class PickUpWarningUtils {
     public static int extractCountFromMessage(Component message){
         List<Component> siblings = message.getSiblings();
         return Integer.parseInt(siblings.get(0).getString());
-    }
-
-    public static int getDelay(String setting){
-        int maxDelay = 200;
-        if(setting.equals("5s")){
-            maxDelay = 100;
-        }
-        else if(setting.equals("3s")){
-            maxDelay = 60;
-        }
-        return maxDelay;
     }
 }
 

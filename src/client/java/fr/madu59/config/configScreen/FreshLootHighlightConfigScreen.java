@@ -33,12 +33,8 @@ public class FreshLootHighlightConfigScreen extends Screen {
         list.addButton(SettingsManager.ENABLE_PICKUP_WARNING, btn -> {
             SettingsManager.ENABLE_PICKUP_WARNING.setToNextValue();
         });
-        list.addButton(SettingsManager.ENABLE_PICKUP_WARNING_GROUPING, btn -> {
-            SettingsManager.ENABLE_PICKUP_WARNING_GROUPING.setToNextValue();
-        }, INDENT);
-        list.addButton(SettingsManager.PICKUP_WARNING_TIMEOUT, btn -> {
-            SettingsManager.PICKUP_WARNING_TIMEOUT.setToNextValue();
-        }, INDENT);
+        list.addSlider(SettingsManager.PICKUP_WARNING_TIMEOUT, 3f, 10f, 0.1f, INDENT);
+        list.addSlider(SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT, 0f, 10f, 0.1f, INDENT);
         list.addButton(SettingsManager.PICKUP_WARNING_STYLE, btn -> {
             SettingsManager.PICKUP_WARNING_STYLE.setToNextValue();
         }, INDENT);
