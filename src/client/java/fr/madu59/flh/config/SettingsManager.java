@@ -199,7 +199,7 @@ public class SettingsManager {
         return new int[] {red, green, blue};
     }
 
-        public static void saveSettings(List<Option<?>> options) {
+    public static void saveSettings(List<Option<?>> options) {
         Map<String, String> map = toMap(options);
         try {
             Files.createDirectories(CONFIG_PATH.getParent());

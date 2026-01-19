@@ -60,13 +60,6 @@ public class Option<T> {
         return I18n.get(this.value.toString());
     }
 
-    public String getValueAsString() {
-        if( value instanceof Boolean boolValue) {
-            return boolValue ? "Enabled" : "Disabled";
-        }
-        return this.value.toString();
-    }
-
     public void setToNextValue() {
         this.value = cycle(this.value);
     }
