@@ -1,12 +1,13 @@
-package fr.madu59;
+package fr.madu59.flh;
 
 import java.util.List;
+
+import fr.madu59.flh.config.Option;
+import fr.madu59.flh.config.SettingsManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import fr.madu59.config.Option;
-import fr.madu59.config.SettingsManager;
 
 public class PickUpWarningUtils {
 

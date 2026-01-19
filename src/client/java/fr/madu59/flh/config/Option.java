@@ -1,6 +1,7 @@
-package fr.madu59.config;
+package fr.madu59.flh.config;
 
 import java.util.List;
+
 import net.minecraft.client.resources.language.I18n;
 
 public class Option<T> {

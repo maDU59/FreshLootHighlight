@@ -1,4 +1,4 @@
-package fr.madu59;
+package fr.madu59.flh;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;

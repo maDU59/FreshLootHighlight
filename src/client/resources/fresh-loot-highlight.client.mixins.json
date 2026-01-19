@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "fr.madu59.mixin.client",
+	"package": "fr.madu59.flh.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"ClientPlayNetworkHandlerMixin",

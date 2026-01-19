@@ -1,4 +1,4 @@
-package fr.madu59.mixin.client;
+package fr.madu59.flh.mixin.client;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import fr.madu59.FreshLootHighlightClient;
+import fr.madu59.flh.FreshLootHighlightClient;
 
 @Mixin(ClientPacketListener.class)
 public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketListener, ClientGamePacketListener {

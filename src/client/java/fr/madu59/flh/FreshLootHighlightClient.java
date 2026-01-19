@@ -1,4 +1,4 @@
-package fr.madu59;
+package fr.madu59.flh;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -16,10 +16,10 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fr.madu59.config.ClientCommands;
-import fr.madu59.config.Option;
-import fr.madu59.config.SettingsManager;
 
+import fr.madu59.flh.config.ClientCommands;
+import fr.madu59.flh.config.Option;
+import fr.madu59.flh.config.SettingsManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;

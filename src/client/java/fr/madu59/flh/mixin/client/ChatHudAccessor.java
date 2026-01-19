@@ -1,4 +1,4 @@
-package fr.madu59.mixin.client;
+package fr.madu59.flh.mixin.client;
 
 import java.util.List;
 import net.minecraft.client.GuiMessage;

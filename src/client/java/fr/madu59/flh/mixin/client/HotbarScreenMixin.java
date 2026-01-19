@@ -1,10 +1,11 @@
-package fr.madu59.mixin.client;
+package fr.madu59.flh.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import fr.madu59.FreshLootHighlightClient;
+
+import fr.madu59.flh.FreshLootHighlightClient;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

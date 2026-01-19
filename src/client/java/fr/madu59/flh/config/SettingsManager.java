@@ -1,10 +1,10 @@
-package fr.madu59.config;
+package fr.madu59.flh.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import fr.madu59.FreshLootHighlight;
+import fr.madu59.flh.FreshLootHighlight;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.*;
