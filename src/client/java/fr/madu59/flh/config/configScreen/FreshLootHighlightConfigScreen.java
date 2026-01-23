@@ -1,22 +1,36 @@
 package fr.madu59.flh.config.configScreen;
 
 import fr.madu59.flh.config.SettingsManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public class FreshLootHighlightConfigScreen extends Screen {
+    
     private MyConfigListWidget list;
-
     private final String INDENT = " ⤷  ";
+    private final Screen parent;
 
     protected FreshLootHighlightConfigScreen(Screen parent) {
         super(Component.literal("Fresh Loot Highlight config"));
         this.parent = parent;
     }
 
-    private final Screen parent;
+    public static void registerCommand() {
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            dispatcher.register(
+                literal("flhConfig")
+                    .executes(context -> {
+                        Minecraft.getInstance().execute(() -> Minecraft.getInstance().setScreen(new FreshLootHighlightConfigScreen(null)));
+                        return 1;
+                    })
+            );
+        });
+    }
 
     @Override
     protected void init() {

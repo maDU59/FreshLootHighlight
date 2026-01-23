@@ -17,9 +17,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import fr.madu59.flh.config.ClientCommands;
 import fr.madu59.flh.config.Option;
 import fr.madu59.flh.config.SettingsManager;
+import fr.madu59.flh.config.configScreen.FreshLootHighlightConfigScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -54,7 +54,8 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ClientCommands.register();
+		FreshLootHighlightConfigScreen.registerCommand();
+
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath(FreshLootHighlight.MOD_ID, "pick_up_warning_hud"), FreshLootHighlightClient::render);
 
