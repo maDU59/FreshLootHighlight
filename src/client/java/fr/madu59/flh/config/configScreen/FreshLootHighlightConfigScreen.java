@@ -40,27 +40,15 @@ public class FreshLootHighlightConfigScreen extends Screen {
 
         // Example: Add categories + buttons
         list.addCategory("fresh-loot-highlight.config.category_slot_highlighter");
-        list.addButton(SettingsManager.ENABLE_SLOT_HIGHLIGHTER, btn -> {
-            SettingsManager.ENABLE_SLOT_HIGHLIGHTER.setToNextValue();
-        });
+        list.addButton(SettingsManager.ENABLE_SLOT_HIGHLIGHTER);
         list.addCategory("fresh-loot-highlight.config.category_pickup_warning");
-        list.addButton(SettingsManager.ENABLE_PICKUP_WARNING, btn -> {
-            SettingsManager.ENABLE_PICKUP_WARNING.setToNextValue();
-        });
+        list.addButton(SettingsManager.ENABLE_PICKUP_WARNING);
         list.addSlider(SettingsManager.PICKUP_WARNING_TIMEOUT, 3f, 10f, 0.1f, INDENT);
         list.addSlider(SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT, 0f, 10f, 0.1f, INDENT);
-        list.addButton(SettingsManager.PICKUP_WARNING_STYLE, btn -> {
-            SettingsManager.PICKUP_WARNING_STYLE.setToNextValue();
-        }, INDENT);
-        list.addButton(SettingsManager.PICKUP_WARNING_HUD_POSITION, btn -> {
-            SettingsManager.PICKUP_WARNING_HUD_POSITION.setToNextValue();
-        }, INDENT);
-        list.addButton(SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM, btn -> {
-            SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM.setToNextValue();
-        }, INDENT);
-        list.addButton(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR, btn -> {
-            SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.setToNextValue();
-        }, INDENT);
+        list.addButton(SettingsManager.PICKUP_WARNING_STYLE, INDENT);
+        list.addButton(SettingsManager.PICKUP_WARNING_HUD_POSITION, INDENT);
+        list.addButton(SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM, INDENT);
+        list.addButton(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR, INDENT);
 
         Button doneButton = Button.builder(Component.literal("Done"), b -> {
             this.minecraft.setScreen(this.parent);
