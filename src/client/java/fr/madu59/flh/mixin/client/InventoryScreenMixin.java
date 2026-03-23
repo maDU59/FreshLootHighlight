@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.flh.FreshLootHighlightClient;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -26,8 +26,8 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
         super(handler, inventory, title);
     }
 
-    @Inject(method = "render", at = @At("TAIL"))
-    private void drawNewItemBadges(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "extractRenderState", at = @At("TAIL"))
+    private void drawNewItemBadges(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         InventoryScreen screen = (InventoryScreen) (Object) this;
 
         for(int i = 0; i < screen.getMenu().slots.size(); i++) {

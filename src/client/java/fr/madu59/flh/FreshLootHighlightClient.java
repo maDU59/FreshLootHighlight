@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken;
 
 import fr.madu59.flh.config.Option;
 import fr.madu59.flh.config.SettingsManager;
-import fr.madu59.flh.config.configScreen.FreshLootHighlightConfigScreen;
+import fr.madu59.flh.config.configscreen.FreshLootHighlightConfigScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -29,7 +29,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -127,18 +127,20 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		}
 
 		Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
-		if(alreadyFound.contains(itemId) && SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == Option.SlotHighlighterToggle.ALWAYS){
+		if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == Option.SlotHighlighterToggle.ALWAYS){
 			freshSlots.add(inv.getFreeSlot());
 		}
 		else if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() != Option.SlotHighlighterToggle.NEVER){
-			alreadyFound.add(itemId);
+			if(!alreadyFound.contains(itemId)){
+				foundForTheFirstTime.add(itemId);
+				alreadyFound.add(itemId);
+				saveAlreadyFound();
+			}
 			freshSlots.add(inv.getFreeSlot());
-			foundForTheFirstTime.add(itemId);
-			saveAlreadyFound();
 		}
 	}
 
-	private static void render(GuiGraphics context, DeltaTracker tickCounter){
+	private static void render(GuiGraphicsExtractor context, DeltaTracker tickCounter){
 		Font textRenderer = Minecraft.getInstance().font;
 		int entryX = 0;
 		int entryY = 0;
@@ -160,10 +162,10 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			Matrix3x2fStack matrices = context.pose();
 			if(showItem){
 				matrices.scale(0.5F);
-				context.renderFakeItem(pickUpWarning.itemStack, (int)((entryX + 1.5) * 2), (int)((entryY + 1.5) * 2));
+				context.fakeItem(pickUpWarning.itemStack, (int)((entryX + 1.5) * 2), (int)((entryY + 1.5) * 2));
 				matrices.scale(2F);
 			}
-			context.drawString(textRenderer, pickUpWarning.message, entryX + (showItem? 11: 0), entryY + (tileSizeY - textRenderer.lineHeight)/2 + 1, 0xFFFFFFFF, false);
+			context.text(textRenderer, pickUpWarning.message, entryX + (showItem? 11: 0), entryY + (tileSizeY - textRenderer.lineHeight)/2 + 1, 0xFFFFFFFF, false);
 			entryY += tileSizeY;
 		}
 	}

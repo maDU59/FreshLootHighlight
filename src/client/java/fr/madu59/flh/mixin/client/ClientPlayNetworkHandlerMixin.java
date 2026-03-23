@@ -39,7 +39,6 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
             Entity entity = this.level.getEntity(packet.getItemId());
             
             if (!recentPickups.add(packet.getItemId()) && entity instanceof ItemEntity itemEntity && !itemEntity.isRemoved()) {
-                System.out.println("Picked up item: " + itemEntity.getItem().getItem().toString());
                 FreshLootHighlightClient.onPickUpEvent(itemEntity.getItem());
             }
 

@@ -6,8 +6,7 @@
 		"ClientPlayNetworkHandlerMixin",
 		"InventoryScreenMixin",
 		"CreativeInventoryScreenMixin",
-		"HotbarScreenMixin",
-		"ChatHudAccessor"
+		"HotbarScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

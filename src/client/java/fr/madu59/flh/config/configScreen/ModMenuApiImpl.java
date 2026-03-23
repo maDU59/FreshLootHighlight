@@ -1,4 +1,4 @@
-package fr.madu59.flh.config.configScreen;
+package fr.madu59.flh.config.configscreen;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

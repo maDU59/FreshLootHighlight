@@ -9,7 +9,7 @@ import fr.madu59.flh.FreshLootHighlightClient;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -20,12 +20,13 @@ import net.minecraft.world.item.ItemStack;
 @Mixin(Gui.class)
 public abstract class HotbarScreenMixin {
 
-    @Inject(method = "renderSlot", at = @At("TAIL"))
-    private void renderHotbarItem(GuiGraphics context, int x, int y, DeltaTracker tickCounter, Player player, ItemStack stack, int id, CallbackInfo Ci) {
+    private final static Identifier exclamationMarkTexture = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+    private final static Identifier exclamationMarkTextureAlt = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
+
+    @Inject(method = "extractSlot", at = @At("TAIL"))
+    private void renderHotbarItem(GuiGraphicsExtractor context, int x, int y, DeltaTracker tickCounter, Player player, ItemStack stack, int id, CallbackInfo Ci) {
         if(FreshLootHighlightClient.freshSlots.contains(id-1)) {
             // Display exlamation mark
-            Identifier exclamationMarkTexture = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-            Identifier exclamationMarkTextureAlt = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
             Item item = Minecraft.getInstance().player.getInventory().getItem(id-1).getItem();
             Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
             boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);
