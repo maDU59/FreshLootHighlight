@@ -127,14 +127,16 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		}
 
 		Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
-		if(alreadyFound.contains(itemId) && SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == Option.SlotHighlighterToggle.ALWAYS){
+		if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == Option.SlotHighlighterToggle.ALWAYS){
 			freshSlots.add(inv.getFreeSlot());
 		}
 		else if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() != Option.SlotHighlighterToggle.NEVER){
-			alreadyFound.add(itemId);
+			if(!alreadyFound.contains(itemId)){
+				foundForTheFirstTime.add(itemId);
+				alreadyFound.add(itemId);
+				saveAlreadyFound();
+			}
 			freshSlots.add(inv.getFreeSlot());
-			foundForTheFirstTime.add(itemId);
-			saveAlreadyFound();
 		}
 	}
 
