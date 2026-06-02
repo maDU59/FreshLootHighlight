@@ -1,8 +1,8 @@
-package fr.madu59.flh.config.configScreen;
+package fr.madu59.flh.config.configscreen;
 
 import java.util.List;
 
-import fr.madu59.flh.config.configScreen.MyConfigListWidget;
+import fr.madu59.flh.config.configscreen.MyConfigListWidget;
 import fr.madu59.flh.config.Option;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -114,10 +114,10 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     }
 
     // Base entry
-    public abstract static class Entry extends ContainerObjectSelectionList.Entry<fr.madu59.flh.config.configScreen.MyConfigListWidget.Entry> {}
+    public abstract static class Entry extends ContainerObjectSelectionList.Entry<fr.madu59.flh.config.configscreen.MyConfigListWidget.Entry> {}
 
     // Category header
-    public static class CategoryEntry extends fr.madu59.flh.config.configScreen.MyConfigListWidget.Entry {
+    public static class CategoryEntry extends fr.madu59.flh.config.configscreen.MyConfigListWidget.Entry {
         private final String name;
 
         public CategoryEntry(String name) {
@@ -144,7 +144,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     }
 
     // Button entry
-    public static class ButtonEntry extends fr.madu59.flh.config.configScreen.MyConfigListWidget.Entry{
+    public static class ButtonEntry extends fr.madu59.flh.config.configscreen.MyConfigListWidget.Entry{
         private final Button button;
         private final String name;
         private final String description;
