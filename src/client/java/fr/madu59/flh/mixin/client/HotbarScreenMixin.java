@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.flh.FreshLootHighlightClient;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -19,17 +18,19 @@ import net.minecraft.world.item.ItemStack;
 @Mixin(Gui.class)
 public abstract class HotbarScreenMixin {
 
-    private final static ResourceLocation exclamationMarkTexture = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-    private final static ResourceLocation exclamationMarkTextureAlt = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
+    private final static ResourceLocation exclamationMarkTexture = ResourceLocation.tryBuild("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+    private final static ResourceLocation exclamationMarkTextureAlt = ResourceLocation.tryBuild("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
 
     @Inject(method = "renderSlot", at = @At("TAIL"))
-    private void renderHotbarItem(GuiGraphics context, int x, int y, DeltaTracker tickCounter, Player player, ItemStack stack, int id, CallbackInfo Ci) {
+    private void renderHotbarItem(GuiGraphics context, int x, int y, float tickCounter, Player player, ItemStack stack, int id, CallbackInfo Ci) {
         if(FreshLootHighlightClient.freshSlots.contains(id-1)) {
-            // Display exlamation mark
+            context.pose().pushPose();
+            context.pose().translate(0, 0, 199.0F);
             Item item = Minecraft.getInstance().player.getInventory().getItem(id-1).getItem();
             ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
             boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);
             context.blit(isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
+            context.pose().popPose();
         }
     }
 }

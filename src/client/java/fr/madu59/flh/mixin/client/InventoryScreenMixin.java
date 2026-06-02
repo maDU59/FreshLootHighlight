@@ -45,8 +45,8 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
 				inventoryIndex = -1; // crafting, skip
 			}
 
-            ResourceLocation exclamationMarkTexture = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-            ResourceLocation exclamationMarkTextureAlt = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
+            ResourceLocation exclamationMarkTexture = ResourceLocation.tryBuild("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+            ResourceLocation exclamationMarkTextureAlt = ResourceLocation.tryBuild("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
 
 
             if(FreshLootHighlightClient.freshSlots.contains(inventoryIndex)) {
@@ -60,7 +60,10 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
                 int y = slot.y + this.topPos;
 
                 // Display exlamation mark
+                context.pose().pushPose();
+                context.pose().translate(0, 0, 399.0F);
                 context.blit(isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
+                context.pose().popPose();
 
                 // Delete from fresh list on hovering
                 if(mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {

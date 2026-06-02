@@ -24,7 +24,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -137,7 +136,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		}
 	}
 
-	private static void render(GuiGraphics context, DeltaTracker tickCounter){
+	private static void render(GuiGraphics context, float tickCounter){
 		Font textRenderer = Minecraft.getInstance().font;
 		int entryX = 0;
 		int entryY = 0;
@@ -187,7 +186,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
         try (Reader reader = Files.newBufferedReader(path)) {
             Type listType = new TypeToken<List<String>>(){}.getType();
             List<String> raw = GSON.fromJson(reader, listType);
-          	alreadyFound = new ArrayList<>(raw.stream().map(ResourceLocation::parse).toList());
+          	alreadyFound = new ArrayList<>(raw.stream().map(ResourceLocation::tryParse).toList());
         }
 		catch(Exception e) {
 			System.out.println(e);
