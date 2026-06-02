@@ -40,7 +40,7 @@ public class PickUpWarningUtils {
             int id = 0;
             float maxDelay = SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT.getValue() * 20;
             for(PickUpWarning warning: messages){
-                if(isMessageOfSameItem(warning, name) && Minecraft.getInstance().gui.getGuiTicks() < warning.creationTick + maxDelay){
+                if(isMessageOfSameItem(warning, itemStack) && Minecraft.getInstance().gui.getGuiTicks() < warning.creationTick + maxDelay){
                     count += extractCountFromMessage(warning.message);
                     messages.remove(id);
                     messages.add(new PickUpWarning(item, count));
@@ -55,12 +55,8 @@ public class PickUpWarningUtils {
         return messages;
     }
 
-    public static boolean isMessageOfSameItem(PickUpWarning warning, Component itemName){
-        List<Component> siblings = warning.message.getSiblings();
-        if (siblings.size() == 3 && siblings.getLast() == itemName) {
-            return true;
-        }
-        return false;
+    public static boolean isMessageOfSameItem(PickUpWarning warning, ItemStack itemStack){
+        return ItemStack.isSameItem(warning.itemStack, itemStack);
     }
 
     public static int extractCountFromMessage(Component message){
