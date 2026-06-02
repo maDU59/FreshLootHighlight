@@ -19,12 +19,13 @@ import net.minecraft.world.item.ItemStack;
 @Mixin(Gui.class)
 public abstract class HotbarScreenMixin {
 
+    private final static ResourceLocation exclamationMarkTexture = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+    private final static ResourceLocation exclamationMarkTextureAlt = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
+
     @Inject(method = "renderSlot", at = @At("TAIL"))
     private void renderHotbarItem(GuiGraphics context, int x, int y, DeltaTracker tickCounter, Player player, ItemStack stack, int id, CallbackInfo Ci) {
         if(FreshLootHighlightClient.freshSlots.contains(id-1)) {
             // Display exlamation mark
-            ResourceLocation exclamationMarkTexture = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-            ResourceLocation exclamationMarkTextureAlt = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
             Item item = Minecraft.getInstance().player.getInventory().getItem(id-1).getItem();
             ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
             boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);
