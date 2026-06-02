@@ -9,10 +9,10 @@ public class NarratorUtils {
     private static final GameNarrator narratorManager = Minecraft.getInstance().getNarrator();
 
     public static void narrate(Component message) {
-        narratorManager.saySystemChatQueued(message);
+        narratorManager.say(message);
     }
 
     public static void narrate(String message) {
-        narratorManager.saySystemChatQueued(Component.literal(message));
+        narratorManager.say(Component.literal(message));
     }
 }

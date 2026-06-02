@@ -12,11 +12,11 @@ import net.minecraft.world.item.ItemStack;
 public class PickUpWarningUtils {
 
     public static Component createMessage(ItemStack itemStack){
-        return createMessage(itemStack.getItem().getName(), itemStack.getCount(),false);
+        return createMessage(itemStack.getDisplayName(), itemStack.getCount(),false);
     }
 
     public static Component createMessage(Item item, int count){
-        return createMessage(item.getName(), count,false);
+        return createMessage(item.getDefaultInstance().getDisplayName(), count,false);
     }
 
     public static Component createMessage(Component name, int count){
@@ -34,7 +34,7 @@ public class PickUpWarningUtils {
 
     public static List<PickUpWarning> AddOrEditMessage(ItemStack itemStack, List<PickUpWarning> messages){
         int count = itemStack.getCount();
-        Component name = itemStack.getItemName();
+        Component name = itemStack.getDisplayName();
         Item item = itemStack.getItem();
         if(SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT.getValue() != 0f){
             int id = 0;
@@ -44,14 +44,14 @@ public class PickUpWarningUtils {
                     count += extractCountFromMessage(warning.message);
                     messages.remove(id);
                     messages.add(new PickUpWarning(item, count));
-                    if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(item.getName(), count, true));
+                    if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
                     return messages;
                 }
                 id++;
             }
         }
         messages.add(new PickUpWarning(item, count));
-        if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(item.getName(), count, true));
+        if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
         return messages;
     }
 

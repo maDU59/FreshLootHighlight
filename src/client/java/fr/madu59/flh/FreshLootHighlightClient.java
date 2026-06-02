@@ -23,8 +23,6 @@ import fr.madu59.flh.config.configScreen.FreshLootHighlightConfigScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -32,7 +30,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -49,15 +47,15 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	public static List<PickUpWarning> pickUpMessages = new ArrayList<PickUpWarning>();
 	public static String serverId = "NoWorldOrServer";
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	private static List<Identifier> alreadyFound = new ArrayList<Identifier>();
-	public static List<Identifier> foundForTheFirstTime = new ArrayList<Identifier>();
+	private static List<ResourceLocation> alreadyFound = new ArrayList<ResourceLocation>();
+	public static List<ResourceLocation> foundForTheFirstTime = new ArrayList<ResourceLocation>();
 
 	@Override
 	public void onInitializeClient() {
 		FreshLootHighlightConfigScreen.registerCommand();
 
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
-		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath(FreshLootHighlight.MOD_ID, "pick_up_warning_hud"), FreshLootHighlightClient::render);
+		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, ResourceLocation.fromNamespaceAndPath(FreshLootHighlight.MOD_ID, "pick_up_warning_hud"), FreshLootHighlightClient::render);
 
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			// This runs when the client enters a world
@@ -80,7 +78,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			if(inv == null) return;
 			if(freshSlots.contains(inv.getSelectedSlot())){
 				freshSlots.remove(Integer.valueOf(inv.getSelectedSlot()));
-				FreshLootHighlightClient.foundForTheFirstTime.remove(BuiltInRegistries.ITEM.getKey(inv.getSelectedItem().getItem()));
+				FreshLootHighlightClient.foundForTheFirstTime.remove(BuiltInRegistries.ITEM.getKey(inv.getSelected().getItem()));
 			}
 			if(freshSlots.contains(36)){
 				freshSlots.remove((Integer)36);
@@ -126,7 +124,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			}
 		}
 
-		Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
+		ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
 		if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == Option.SlotHighlighterToggle.ALWAYS){
 			freshSlots.add(inv.getFreeSlot());
 		}
@@ -175,7 +173,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		try {
             Files.createDirectories(path.getParent());
             try (Writer writer = Files.newBufferedWriter(path)) {
-                GSON.toJson(alreadyFound.stream().map(Identifier::toString).toList(), writer);
+                GSON.toJson(alreadyFound.stream().map(ResourceLocation::toString).toList(), writer);
             }
 			catch (IOException e) {
 				e.printStackTrace();
@@ -190,7 +188,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
         try (Reader reader = Files.newBufferedReader(path)) {
             Type listType = new TypeToken<List<String>>(){}.getType();
             List<String> raw = GSON.fromJson(reader, listType);
-          	alreadyFound = new ArrayList<>(raw.stream().map(Identifier::parse).toList());
+          	alreadyFound = new ArrayList<>(raw.stream().map(ResourceLocation::parse).toList());
         }
 		catch(Exception e) {
 			System.out.println(e);

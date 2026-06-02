@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
@@ -46,14 +46,14 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
 				inventoryIndex = -1; // crafting, skip
 			}
 
-            Identifier exclamationMarkTexture = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-            Identifier exclamationMarkTextureAlt = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
+            ResourceLocation exclamationMarkTexture = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
+            ResourceLocation exclamationMarkTextureAlt = ResourceLocation.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
 
 
             if(FreshLootHighlightClient.freshSlots.contains(inventoryIndex)) {
 
                 Item item = Minecraft.getInstance().player.getInventory().getItem(inventoryIndex).getItem();
-                Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
+                ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
                 boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);
 
                 // Slot screen coordinates
