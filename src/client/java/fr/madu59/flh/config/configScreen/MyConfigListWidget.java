@@ -1,8 +1,6 @@
-package fr.madu59.flh.config.configScreen;
+package fr.madu59.flh.config.configscreen;
 
 import java.util.List;
-
-import fr.madu59.flh.config.configScreen.MyConfigListWidget;
 import fr.madu59.flh.config.Option;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -13,7 +11,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -25,7 +22,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     }
 
     @Override
-	protected int scrollBarX() {
+	protected int getScrollbarPosition() {
 		return this.getX() + this.getWidth() - 6;
 	}
 
@@ -43,15 +40,15 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     }
 
     public void addButton(Option<?> option) {
-        addButton(option, "");    
+        this.addButton(option, "");
     }
 
     public void addButton(Option<?> option, String indent) {
-        this.addEntry(new ButtonEntry(Button.builder(Component.literal(option.getValueAsTranslatedString()), btn -> {option.setToNextValue();}).bounds(0, 0, 100, 20).build(), option, indent));
+        this.addEntry(new ButtonEntry(Button.builder(Component.translatable("fwa.config.value." + option.getValue().toString().toLowerCase()), btn -> {option.setToNextValue();}).bounds(0, 0, 100, 20).build(), option, indent));
     }
 
     public <N extends Number> void addSlider(Option<N> option, N min, N max, N step) {
-        this.addSlider(option, min, max, step, "");
+        addSlider(option, min, max, step, "");
     }
 
     public <N extends Number> void addSlider(Option<N> option, N min, N max, N step, String indent) {
@@ -77,7 +74,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
                 }
 
                 String format = "%." + decimalPlaces + "f";
-                String formattedValue = String.format(java.util.Locale.ROOT, format, option.getValue());
+                String formattedValue = String.format(java.util.Locale.ROOT, format, option.getValue().floatValue());
 
                 this.setMessage(Component.literal(formattedValue));
             }
@@ -114,10 +111,10 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     }
 
     // Base entry
-    public abstract static class Entry extends ContainerObjectSelectionList.Entry<fr.madu59.flh.config.configScreen.MyConfigListWidget.Entry> {}
+    public abstract static class Entry extends ContainerObjectSelectionList.Entry<MyConfigListWidget.Entry> {}
 
     // Category header
-    public static class CategoryEntry extends fr.madu59.flh.config.configScreen.MyConfigListWidget.Entry {
+    public static class CategoryEntry extends MyConfigListWidget.Entry {
         private final String name;
 
         public CategoryEntry(String name) {
@@ -125,10 +122,10 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
         }
 
         @Override
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+       public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             Font textRenderer = Minecraft.getInstance().font;
-            int textX = getContentX() + getContentWidth() / 2;
-            int textY = getContentY() + (getContentHeight() - textRenderer.lineHeight) / 2;
+            int textX = x + entryWidth / 2;
+            int textY = y + (entryHeight - textRenderer.lineHeight) / 2;
             context.drawCenteredString(textRenderer, Component.translatable(this.name).withStyle(ChatFormatting.UNDERLINE), textX, textY, 0xFFFFFFFF);
         }  
 
@@ -144,31 +141,29 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     }
 
     // Button entry
-    public static class ButtonEntry extends fr.madu59.flh.config.configScreen.MyConfigListWidget.Entry{
+    public static class ButtonEntry extends MyConfigListWidget.Entry{
         private final Button button;
         private final String name;
-        private final String description;
         private final String indent;
         private final Option<?> option;
 
         public ButtonEntry(Button button, Option<?> option, String indent) {
             this.button = button;
             this.name = option.getName();
-            this.description = option.getDescription();
             this.indent = indent;
             this.option = option;
         }
 
         @Override
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            this.button.setY(this.getContentY() + (this.getContentHeight() - this.button.getHeight()) / 2);
-            this.button.setX(this.getContentWidth() - this.button.getWidth() - 10);
+        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            this.button.setY(y + (entryHeight - this.button.getHeight()) / 2);
+            this.button.setX(entryWidth - this.button.getWidth() - 10);
             this.button.render(context, mouseX, mouseY, tickDelta);
 
             if(this.name == null) return;
 
             Font textRenderer = Minecraft.getInstance().font;
-            context.drawString(textRenderer, Component.literal(indent + this.name), 10, this.getContentY() + (this.getContentHeight() - textRenderer.lineHeight) / 2, 0xFFFFFFFF, true);
+            context.drawString(textRenderer, Component.literal(indent + this.name), 10, y + (entryHeight - textRenderer.lineHeight) / 2, 0xFFFFFFFF, true);
         }
 
         @Override
@@ -182,11 +177,11 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
         }
 
         @Override
-        public boolean mouseClicked(MouseButtonEvent click, boolean doubleClick) {
-            if (this.button.mouseClicked(click, doubleClick)) {
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            if (this.button.mouseClicked(mouseX, mouseY, button)) {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 if(this.option != null){
-                    this.button.setMessage(Component.literal(this.option.getValueAsTranslatedString()));
+                    this.button.setMessage(Component.translatable("fwa.config.value." + this.option.getValue().toString().toLowerCase()));
                 }
                 return true;
             }
@@ -198,26 +193,24 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     public static class SliderEntry extends MyConfigListWidget.Entry{
         private final AbstractSliderButton slider;
         private final String name;
-        private final String description;
         private final String indent;
 
         public SliderEntry(AbstractSliderButton slider, Option<?> option, String indent) {
             this.slider = slider;
             this.name = option.getName();
-            this.description = option.getDescription();
             this.indent = indent;
         }
 
         @Override
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            this.slider.setY(this.getContentY() + (this.getContentHeight() - this.slider.getHeight()) / 2);
-            this.slider.setX(this.getContentWidth() - this.slider.getWidth() - 10);
+        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            this.slider.setY(y + (entryHeight - this.slider.getHeight()) / 2);
+            this.slider.setX(entryWidth - this.slider.getWidth() - 10);
             this.slider.render(context, mouseX, mouseY, tickDelta);
 
             if(this.name == null) return;
 
             Font textRenderer = Minecraft.getInstance().font;
-            context.drawString(textRenderer, Component.literal(indent + this.name), 10, this.getContentY() + (this.getContentHeight() - textRenderer.lineHeight) / 2, 0xFFFFFFFF, true);
+            context.drawString(textRenderer, Component.literal(indent + this.name), 10, y + (entryHeight - textRenderer.lineHeight) / 2, 0xFFFFFFFF, true);
         }
 
         @Override

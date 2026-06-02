@@ -1,4 +1,4 @@
-package fr.madu59.flh.config.configScreen;
+package fr.madu59.flh.config.configscreen;
 
 import fr.madu59.flh.config.SettingsManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;

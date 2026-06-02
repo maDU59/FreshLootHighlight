@@ -16,10 +16,11 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.flh.config.Option;
 import fr.madu59.flh.config.SettingsManager;
-import fr.madu59.flh.config.configScreen.FreshLootHighlightConfigScreen;
+import fr.madu59.flh.config.configscreen.FreshLootHighlightConfigScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -157,11 +158,11 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			int entryWidth = textRenderer.width(pickUpWarning.message) + (showItem? 11: 0);
 			entryX = isAlignedLeft? context.guiWidth() - entryWidth : 0;
 			context.fill(entryX, entryY, entryX + entryWidth, entryY  + tileSizeY, 0x99000000);
-			Matrix3x2fStack matrices = context.pose();
+			PoseStack matrices = context.pose();
 			if(showItem){
-				matrices.scale(0.5F);
+				matrices.scale(0.5f, 0.5f, 0.5f);
 				context.renderFakeItem(pickUpWarning.itemStack, (int)((entryX + 1.5) * 2), (int)((entryY + 1.5) * 2));
-				matrices.scale(2F);
+				matrices.scale(2f, 2f, 2f);
 			}
 			context.drawString(textRenderer, pickUpWarning.message, entryX + (showItem? 11: 0), entryY + (tileSizeY - textRenderer.lineHeight)/2 + 1, 0xFFFFFFFF, false);
 			entryY += tileSizeY;
