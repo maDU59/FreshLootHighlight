@@ -44,14 +44,14 @@ public class PickUpWarningUtils {
                     count += extractCountFromMessage(warning.message);
                     messages.remove(id);
                     messages.add(new PickUpWarning(item, count));
-                    if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(itemStack.getItemName(), count, true));
+                    if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
                     return messages;
                 }
                 id++;
             }
         }
         messages.add(new PickUpWarning(item, count));
-        if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(itemStack.getItemName(), count, true));
+        if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
         return messages;
     }
 
