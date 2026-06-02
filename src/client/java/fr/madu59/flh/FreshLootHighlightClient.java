@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.joml.Matrix3x2fStack;
-
 import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
@@ -24,6 +22,7 @@ import fr.madu59.flh.config.configscreen.FreshLootHighlightConfigScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -55,8 +54,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		FreshLootHighlightConfigScreen.registerCommand();
 
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
-		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, ResourceLocation.fromNamespaceAndPath(FreshLootHighlight.MOD_ID, "pick_up_warning_hud"), FreshLootHighlightClient::render);
+		HudRenderCallback.EVENT.register(FreshLootHighlightClient::render);
 
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			// This runs when the client enters a world
@@ -77,8 +75,8 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 			if(client.player == null) return;
 			Inventory inv = client.player.getInventory();
 			if(inv == null) return;
-			if(freshSlots.contains(inv.getSelectedSlot())){
-				freshSlots.remove(Integer.valueOf(inv.getSelectedSlot()));
+			if(freshSlots.contains(inv.selected)){
+				freshSlots.remove(Integer.valueOf(inv.selected));
 				FreshLootHighlightClient.foundForTheFirstTime.remove(BuiltInRegistries.ITEM.getKey(inv.getSelected().getItem()));
 			}
 			if(freshSlots.contains(36)){

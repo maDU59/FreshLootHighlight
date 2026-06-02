@@ -29,6 +29,10 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
 
     @Inject(at = @At("HEAD"), method = "handleTakeItemEntity")
     public void onItemPickupAnimation(ClientboundTakeItemEntityPacket packet, CallbackInfo ci) {
+        if (!Minecraft.getInstance().isSameThread()) Minecraft.getInstance().execute(() -> handleItemPickup(packet));
+    }
+
+    private void handleItemPickup(ClientboundTakeItemEntityPacket packet) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
 
@@ -38,7 +42,7 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
         if (cId == pId) {
             Entity entity = this.level.getEntity(packet.getItemId());
             
-            if (!recentPickups.add(packet.getItemId()) && entity instanceof ItemEntity itemEntity && !itemEntity.isRemoved()) {
+            if (recentPickups.add(packet.getItemId()) && entity instanceof ItemEntity itemEntity && !itemEntity.isRemoved()) {
                 System.out.println("Picked up item: " + itemEntity.getItem().getItem().toString());
                 FreshLootHighlightClient.onPickUpEvent(itemEntity.getItem());
             }

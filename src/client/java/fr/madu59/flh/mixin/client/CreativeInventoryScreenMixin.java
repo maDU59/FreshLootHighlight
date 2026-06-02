@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -62,7 +61,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractContainerScre
                     int y = slot.y + this.topPos;
 
                     // Display exlamation mark
-                    context.blit(RenderPipelines.GUI_TEXTURED, isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
+                    context.blit(isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
 
                     // Delete from fresh list on hovering
                     if(mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
