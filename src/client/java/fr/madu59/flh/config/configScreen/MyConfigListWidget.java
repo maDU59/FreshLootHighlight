@@ -2,7 +2,7 @@ package fr.madu59.flh.config.configscreen;
 
 import java.util.List;
 
-import fr.madu59.flh.config.configscreen.MyConfigListWidget;
+import fr.madu59.flh.FreshLootHighlight;
 import fr.madu59.flh.config.Option;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -47,7 +47,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
     }
 
     public void addButton(Option<?> option, String indent) {
-        this.addEntry(new ButtonEntry(Button.builder(Component.literal(option.getValueAsTranslatedString()), btn -> {option.setToNextValue();}).bounds(0, 0, 100, 20).build(), option, indent));
+        this.addEntry(new ButtonEntry(Button.builder(Component.translatable(FreshLootHighlight.MOD_ID + ".config.value." + option.getValue().toString().toLowerCase()), btn -> {option.setToNextValue();}).bounds(0, 0, 100, 20).build(), option, indent));
     }
 
     public <N extends Number> void addSlider(Option<N> option, N min, N max, N step) {
@@ -186,7 +186,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
             if (this.button.mouseClicked(click, doubleClick)) {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 if(this.option != null){
-                    this.button.setMessage(Component.literal(this.option.getValueAsTranslatedString()));
+                    this.button.setMessage(Component.translatable(FreshLootHighlight.MOD_ID + ".config.value." + this.option.getValue().toString().toLowerCase()));
                 }
                 return true;
             }
