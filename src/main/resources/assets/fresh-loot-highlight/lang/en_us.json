@@ -33,12 +33,16 @@
 
     "0.0": "Never",
 
-    "DEFAULT": "Default",
-    "LONG": "Long",
-    "TOP_LEFT": "Top left",
-    "TOP_RIGHT": "Top right",
-    "BOTTOM_RIGHT": "Bottom right",
-    "ONLY_IF_NEVER_SEEN_BEFORE": "Only if never seen before",
-    "ALWAYS": "Always",
-    "NEVER": "Never"
+    "fresh-loot-highlight.config.value.enabled":"Enabled",
+    "fresh-loot-highlight.config.value.disabled":"Disabled",
+    "fresh-loot-highlight.config.value.true":"Enabled",
+    "fresh-loot-highlight.config.value.false":"Disabled",
+    "fresh-loot-highlight.config.value.default": "Default",
+    "fresh-loot-highlight.config.value.long": "Long",
+    "fresh-loot-highlight.config.value.top_left": "Top left",
+    "fresh-loot-highlight.config.value.top_right": "Top right",
+    "fresh-loot-highlight.config.value.bottom_right": "Bottom right",
+    "fresh-loot-highlight.config.value.only_if_never_seen_before": "Only if never seen before",
+    "fresh-loot-highlight.config.value.always": "Always",
+    "fresh-loot-highlight.config.value.never": "Never"
 }
