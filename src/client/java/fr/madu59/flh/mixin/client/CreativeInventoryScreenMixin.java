@@ -48,9 +48,6 @@ public abstract class CreativeInventoryScreenMixin extends AbstractContainerScre
                     inventoryIndex = -1; // crafting, skip
                 }
 
-                Identifier exclamationMarkTexture = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted.png");
-                Identifier exclamationMarkTextureAlt = Identifier.fromNamespaceAndPath("fresh-loot-highlight", "textures/gui/sprites/warning_highlighted_alt.png");
-
                 if(FreshLootHighlightClient.freshSlots.contains(inventoryIndex)) {
 
                     Item item = Minecraft.getInstance().player.getInventory().getItem(inventoryIndex).getItem();
@@ -62,7 +59,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractContainerScre
                     int y = slot.y + this.topPos;
 
                     // Display exlamation mark
-                    context.blit(RenderPipelines.GUI_TEXTURED, isFoundForTheFirstTime? exclamationMarkTextureAlt: exclamationMarkTexture, x, y + 2, 0, 0, 14, 14, 14, 14);
+                    FreshLootHighlightClient.highlighterSprite.draw(context, x, y, isFoundForTheFirstTime);
 
                     // Delete from fresh list on hovering
                     if(mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {

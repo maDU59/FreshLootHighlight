@@ -20,6 +20,8 @@ import com.google.gson.reflect.TypeToken;
 import fr.madu59.flh.config.Option;
 import fr.madu59.flh.config.SettingsManager;
 import fr.madu59.flh.config.configscreen.FreshLootHighlightConfigScreen;
+import fr.madu59.flh.highlights.sprites.AbstractSprite;
+import fr.madu59.flh.highlights.sprites.ExclamationMarkSprite;
 import fr.madu59.flh.warnings.PickUpWarning;
 import fr.madu59.flh.warnings.PickUpWarningUtils;
 import net.fabricmc.api.ClientModInitializer;
@@ -53,6 +55,8 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static List<Identifier> alreadyFound = new ArrayList<Identifier>();
 	public static List<Identifier> foundForTheFirstTime = new ArrayList<Identifier>();
+
+	public static AbstractSprite highlighterSprite = new ExclamationMarkSprite();
 
 	@Override
 	public void onInitializeClient() {
