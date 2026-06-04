@@ -23,7 +23,6 @@ public abstract class HotbarScreenMixin {
     @Inject(method = "extractSlot", at = @At("TAIL"))
     private void renderHotbarItem(GuiGraphicsExtractor context, int x, int y, DeltaTracker tickCounter, Player player, ItemStack stack, int id, CallbackInfo Ci) {
         if(FreshLootHighlightClient.freshSlots.contains(id-1)) {
-            // Display exlamation mark
             Item item = Minecraft.getInstance().player.getInventory().getItem(id-1).getItem();
             Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
             boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);

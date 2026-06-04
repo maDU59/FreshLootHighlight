@@ -33,27 +33,27 @@ public class PickUpWarningUtils {
         }
     }
 
-    public static List<PickUpWarning> AddOrEditMessage(ItemStack itemStack, List<PickUpWarning> messages){
+    public static List<PickUpWarning> addOrEditWarning(ItemStack itemStack, List<PickUpWarning> warnings){
         int count = itemStack.getCount();
         Component name = itemStack.getItemName();
         Item item = itemStack.getItem();
         if(SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT.getValue() != 0f){
             int id = 0;
             float maxDelay = SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT.getValue() * 20;
-            for(PickUpWarning warning: messages){
+            for(PickUpWarning warning: warnings){
                 if(PickUpWarning.isSameItem(warning, itemStack) && Minecraft.getInstance().gui.getGuiTicks() < warning.creationTick + maxDelay){
                     count += warning.count;
-                    messages.remove(id);
-                    messages.add(new PickUpWarning(item, count));
+                    warnings.remove(id);
+                    warnings.add(new PickUpWarning(item, count));
                     if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
-                    return messages;
+                    return warnings;
                 }
                 id++;
             }
         }
-        messages.add(new PickUpWarning(item, count));
+        warnings.add(new PickUpWarning(item, count));
         if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
-        return messages;
+        return warnings;
     }
 }
 
