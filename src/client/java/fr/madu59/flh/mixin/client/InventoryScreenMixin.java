@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -58,7 +57,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
 
                 // Display exlamation mark
                 FreshLootHighlightClient.highlighterSprite.draw(context, x, y, isFoundForTheFirstTime);
-                
+
                 // Delete from fresh list on hovering
                 if(mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                     FreshLootHighlightClient.freshSlots.remove((Integer)inventoryIndex);
