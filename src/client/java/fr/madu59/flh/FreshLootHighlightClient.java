@@ -45,7 +45,7 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 	public static List<Integer> freshSlots = new ArrayList<Integer>();
 	public static List<PickUpWarning> pickUpMessages = new ArrayList<PickUpWarning>();
 	public static String serverId = "NoWorldOrServer";
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().create();
 	private static List<Identifier> alreadyFound = new ArrayList<Identifier>();
 	public static List<Identifier> foundForTheFirstTime = new ArrayList<Identifier>();
 
