@@ -17,7 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 @Mixin(Gui.class)
-public abstract class HotbarScreenMixin {
+public abstract class GuiMixin {
 
     @Inject(method = "extractSlot", at = @At("TAIL"))
     private void renderHotbarItem(GuiGraphicsExtractor context, int x, int y, DeltaTracker tickCounter, Player player, ItemStack stack, int id, CallbackInfo Ci) {

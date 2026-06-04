@@ -4,9 +4,8 @@
 	"compatibilityLevel": "JAVA_25",
 	"client": [
 		"ClientPlayNetworkHandlerMixin",
-		"InventoryScreenMixin",
-		"CreativeInventoryScreenMixin",
-		"HotbarScreenMixin"
+		"AbstractContainerScreenMixin",
+		"GuiMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
