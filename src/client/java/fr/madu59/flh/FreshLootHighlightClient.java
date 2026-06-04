@@ -19,6 +19,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.flh.config.Option;
 import fr.madu59.flh.config.SettingsManager;
 import fr.madu59.flh.config.configscreen.FreshLootHighlightConfigScreen;
+import fr.madu59.flh.warnings.PickUpWarning;
+import fr.madu59.flh.warnings.PickUpWarningUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
