@@ -1,7 +1,8 @@
-package fr.madu59.flh;
+package fr.madu59.flh.warnings;
 
 import java.util.List;
 
+import fr.madu59.flh.NarratorUtils;
 import fr.madu59.flh.config.Option;
 import fr.madu59.flh.config.SettingsManager;
 import net.minecraft.client.Minecraft;
@@ -40,8 +41,8 @@ public class PickUpWarningUtils {
             int id = 0;
             float maxDelay = SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT.getValue() * 20;
             for(PickUpWarning warning: messages){
-                if(isMessageOfSameItem(warning, itemStack) && Minecraft.getInstance().gui.getGuiTicks() < warning.creationTick + maxDelay){
-                    count += extractCountFromMessage(warning.message);
+                if(PickUpWarning.isSameItem(warning, itemStack) && Minecraft.getInstance().gui.getGuiTicks() < warning.creationTick + maxDelay){
+                    count += warning.count;
                     messages.remove(id);
                     messages.add(new PickUpWarning(item, count));
                     if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
@@ -53,15 +54,6 @@ public class PickUpWarningUtils {
         messages.add(new PickUpWarning(item, count));
         if(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR.getValue()) NarratorUtils.narrate(createMessage(name, count, true));
         return messages;
-    }
-
-    public static boolean isMessageOfSameItem(PickUpWarning warning, ItemStack itemStack){
-        return ItemStack.isSameItem(warning.itemStack, itemStack);
-    }
-
-    public static int extractCountFromMessage(Component message){
-        List<Component> siblings = message.getSiblings();
-        return Integer.parseInt(siblings.get(0).getString());
     }
 }
 
