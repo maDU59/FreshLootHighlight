@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import fr.madu59.flh.config.Option;
+import fr.madu59.flh.config.Option.SlotHighlighterToggle;
 import fr.madu59.flh.config.Option.WarningPosition;
 import fr.madu59.flh.config.SettingsManager;
 import fr.madu59.flh.config.configscreen.FreshLootHighlightConfigScreen;
@@ -77,8 +77,8 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 				freshSlots.remove(Integer.valueOf(inv.getSelectedSlot()));
 				FreshLootHighlightClient.foundForTheFirstTime.remove(BuiltInRegistries.ITEM.getKey(inv.getSelectedItem().getItem()));
 			}
-			if(freshSlots.contains(36)){
-				freshSlots.remove((Integer)36);
+			if(freshSlots.contains(Inventory.SLOT_OFFHAND)){
+				freshSlots.remove((Integer)Inventory.SLOT_OFFHAND);
 			}
 			inv.getContainerSize();
 
@@ -122,10 +122,10 @@ public class FreshLootHighlightClient implements ClientModInitializer {
 		}
 
 		Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
-		if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == Option.SlotHighlighterToggle.ALWAYS){
+		if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() == SlotHighlighterToggle.ALWAYS){
 			freshSlots.add(inv.getFreeSlot());
 		}
-		else if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() != Option.SlotHighlighterToggle.NEVER){
+		else if(SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() != SlotHighlighterToggle.NEVER){
 			if(!alreadyFound.contains(itemId)){
 				foundForTheFirstTime.add(itemId);
 				alreadyFound.add(itemId);
