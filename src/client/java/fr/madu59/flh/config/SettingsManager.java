@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import fr.madu59.flh.FreshLootHighlight;
+import fr.madu59.flh.config.highlights.HighlightsSprite;
+import fr.madu59.flh.config.highlights.HighlightsToggle;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.*;
@@ -23,57 +25,55 @@ public class SettingsManager {
     public static Option<Boolean> ENABLE_PICKUP_WARNING = loadOptionWithDefaults(
         "ENABLE_PICKUP_WARNING",
         "fresh-loot-highlight.config.enable_pickup_warning",
-        "fresh-loot-highlight.config.enable_pickup_warning_desc",
         true
     );
 
     public static Option<Float> PICKUP_WARNING_GROUPING_TIMEOUT = loadOptionWithDefaults(
         "ENABLE_PICKUP_WARNING_GROUPING",
         "fresh-loot-highlight.config.enable_pickup_warning_grouping",
-        "fresh-loot-highlight.config.enable_pickup_warning_grouping_desc",
         8f
     );
 
     public static Option<Float> PICKUP_WARNING_TIMEOUT = loadOptionWithDefaults(
         "PICKUP_WARNING_TIMEOUT",
         "fresh-loot-highlight.config.pickup_warning_timeout",
-        "fresh-loot-highlight.config.pickup_warning_timeout_desc",
         8f
     );
 
     public static Option<Option.WarningStyle> PICKUP_WARNING_STYLE = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_STYLE",
         "fresh-loot-highlight.config.pickup_warning_hud_style",
-        "fresh-loot-highlight.config.pickup_warning_hud_style_desc",
         Option.WarningStyle.DEFAULT
     );
 
     public static Option<Option.WarningPosition> PICKUP_WARNING_HUD_POSITION = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_POSITION",
         "fresh-loot-highlight.config.pickup_warning_hud_position",
-        "fresh-loot-highlight.config.pickup_warning_hud_position_desc",
         Option.WarningPosition.TOP_LEFT
     );
 
     public static Option<Boolean> PICKUP_WARNING_HUD_SHOW_ITEM = loadOptionWithDefaults(
         "PICKUP_WARNING_HUD_SHOW_ITEM",
         "fresh-loot-highlight.config.pickup_warning_hud_show_item",
-        "fresh-loot-highlight.config.pickup_warning_hud_show_item_desc",
         true
     );
 
-    public static Option<Option.SlotHighlighterToggle> ENABLE_SLOT_HIGHLIGHTER = loadOptionWithDefaults(
+    public static Option<HighlightsToggle> ENABLE_SLOT_HIGHLIGHTER = loadOptionWithDefaults(
         "ENABLE_SLOT_HIGHLIGHTER",
         "fresh-loot-highlight.config.enable_slot_highlighter",
-        "fresh-loot-highlight.config.enable_slot_highlighter_desc",
-        Option.SlotHighlighterToggle.ALWAYS
+        HighlightsToggle.ALWAYS
     );
 
     public static Option<Boolean> ENABLE_PICK_UP_WARNING_NARRATOR = loadOptionWithDefaults(
         "ENABLE_PICK_UP_WARNING_NARRATOR",
         "fresh-loot-highlight.config.enable_pick_up_warning_narrator",
-        "fresh-loot-highlight.config.enable_pick_up_warning_narrator_desc",
         true
+    );
+
+    public static Option<HighlightsSprite> SLOT_HIGHLIGHTER_SPRITE = loadOptionWithDefaults(
+        "SLOT_HIGHLIGHTER_SPRITE",
+        "fresh-loot-highlight.config.highlights_sprite",
+        HighlightsSprite.SMALL
     );
 
     public static List<String> getAllOptionsId(){
@@ -245,13 +245,13 @@ public class SettingsManager {
         else return null;
     }
 
-    private static <T> Option<T> loadOptionWithDefaults(String id, String name, String description, T defaultValue) {
+    private static <T> Option<T> loadOptionWithDefaults(String id, String name, T defaultValue) {
         T optionValue= getOptionValue(id, defaultValue);
         if (optionValue == null) optionValue = defaultValue;
         Option<T> option = new Option<T>(
                 id,
                 name,
-                description,
+                name + "_desc",
                 optionValue,
                 defaultValue
         );

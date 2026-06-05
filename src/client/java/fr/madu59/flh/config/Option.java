@@ -94,10 +94,4 @@ public class Option<T> {
         TOP_LEFT,
         BOTTOM_RIGHT
     }
-
-    public static enum SlotHighlighterToggle{
-        ALWAYS,
-        ONLY_IF_NEVER_SEEN_BEFORE,
-        NEVER
-    }
 }

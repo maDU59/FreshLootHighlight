@@ -41,6 +41,7 @@ public class FreshLootHighlightConfigScreen extends Screen {
         // Example: Add categories + buttons
         list.addCategory("fresh-loot-highlight.config.category_slot_highlighter");
         list.addButton(SettingsManager.ENABLE_SLOT_HIGHLIGHTER);
+        list.addButton(SettingsManager.SLOT_HIGHLIGHTER_SPRITE, INDENT);
         list.addCategory("fresh-loot-highlight.config.category_pickup_warning");
         list.addButton(SettingsManager.ENABLE_PICKUP_WARNING);
         list.addSlider(SettingsManager.PICKUP_WARNING_TIMEOUT, 3f, 10f, 0.1f, INDENT);

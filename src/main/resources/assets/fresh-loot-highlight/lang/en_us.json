@@ -2,36 +2,17 @@
     "fresh-loot-highlight.picked-up-message":"> You picked up ",
 
     "fresh-loot-highlight.config.enable_pickup_warning": "Toggle pickup warnings",
-    "fresh-loot-highlight.config.enable_pickup_warning_desc": "Show a warning when an item is picked up.",
-
     "fresh-loot-highlight.config.enable_pickup_warning_grouping": "Duration in seconds before warnings stop merging",
-    "fresh-loot-highlight.config.enable_pickup_warning_grouping_desc": "Group multiple pickup warnings together within a set time window.",
-
     "fresh-loot-highlight.config.pickup_warning_timeout": "Duration in seconds before warnings disappear",
-    "fresh-loot-highlight.config.pickup_warning_timeout_desc": "Duration before a pickup warning disappears.",
-
     "fresh-loot-highlight.config.pickup_warning_hud_style": "Display style of the pickup warnings",
-    "fresh-loot-highlight.config.pickup_warning_hud_style_desc": "Select the display style for the pickup warning HUD.",
-
     "fresh-loot-highlight.config.pickup_warning_hud_position": "Position of the pickup warnings on the HUD",
-    "fresh-loot-highlight.config.pickup_warning_hud_position_desc": "Position of the pickup warning on the HUD.",
-
     "fresh-loot-highlight.config.pickup_warning_hud_show_item": "Show item's representation",
-    "fresh-loot-highlight.config.pickup_warning_hud_show_item_desc": "Show the picked item in the pickup warning HUD.",
-
     "fresh-loot-highlight.config.enable_slot_highlighter": "Toggle the highlight of newly acquired items in the inventory",
-    "fresh-loot-highlight.config.enable_slot_highlighter_desc": "Highlight inventory slots when new items are added.",
-
     "fresh-loot-highlight.config.enable_pick_up_warning_narrator": "Toggle the Narrator for pickup warnings",
-    "fresh-loot-highlight.config.enable_pick_up_warning_narrator_desc": "Narrate pickup warnings using the narrator.",
+    "fresh-loot-highlight.config.highlights_sprite": "Texture:",
 
     "fresh-loot-highlight.config.category_slot_highlighter": "Slot Highlighter",
     "fresh-loot-highlight.config.category_pickup_warning": "Pickup Warning",
-
-    "fresh-loot-highlight.config.enabled":"Enabled",
-    "fresh-loot-highlight.config.disabled":"Disabled",
-
-    "0.0": "Never",
 
     "fresh-loot-highlight.config.value.enabled":"Enabled",
     "fresh-loot-highlight.config.value.disabled":"Disabled",
@@ -44,5 +25,7 @@
     "fresh-loot-highlight.config.value.bottom_right": "Bottom right",
     "fresh-loot-highlight.config.value.only_if_never_seen_before": "Only if never seen before",
     "fresh-loot-highlight.config.value.always": "Always",
-    "fresh-loot-highlight.config.value.never": "Never"
+    "fresh-loot-highlight.config.value.never": "Never",
+    "fresh-loot-highlight.config.value.small": "Small",
+    "fresh-loot-highlight.config.value.exclamation_mark": "Exclamation mark"
 }

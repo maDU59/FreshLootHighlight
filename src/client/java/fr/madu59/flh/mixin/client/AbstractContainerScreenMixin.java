@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.flh.FreshLootHighlightClient;
+import fr.madu59.flh.config.SettingsManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,7 +28,7 @@ public abstract class AbstractContainerScreenMixin{
                 int x = slot.x;
                 int y = slot.y;
 
-                FreshLootHighlightClient.highlighterSprite.draw(context, x, y, FreshLootHighlightClient.foundForTheFirstTime.contains(BuiltInRegistries.ITEM.getKey(slot.getItem().getItem())));
+                SettingsManager.SLOT_HIGHLIGHTER_SPRITE.getValue().getSprite().draw(context, x, y, FreshLootHighlightClient.foundForTheFirstTime.contains(BuiltInRegistries.ITEM.getKey(slot.getItem().getItem())));
 
                 if(hoveredSlot != null && hoveredSlot.getContainerSlot() == index) {
                     FreshLootHighlightClient.freshSlots.remove((Integer)index);

@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.flh.FreshLootHighlightClient;
+import fr.madu59.flh.config.SettingsManager;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -25,7 +26,7 @@ public abstract class GuiMixin {
             Item item = Minecraft.getInstance().player.getInventory().getItem(id-1).getItem();
             Identifier itemId = BuiltInRegistries.ITEM.getKey(item);
             boolean isFoundForTheFirstTime = FreshLootHighlightClient.foundForTheFirstTime.contains(itemId);
-            FreshLootHighlightClient.highlighterSprite.draw(context, x, y, isFoundForTheFirstTime);
+            SettingsManager.SLOT_HIGHLIGHTER_SPRITE.getValue().getSprite().draw(context, x, y, isFoundForTheFirstTime);
         }
     }
 }
