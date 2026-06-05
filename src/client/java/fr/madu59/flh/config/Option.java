@@ -31,6 +31,10 @@ public class Option<T> {
         return this.value;
     }
 
+    public T getDefaultValue(){
+        return this.defaultValue;
+    }
+
     public String getId() {
         return this.id;
     }

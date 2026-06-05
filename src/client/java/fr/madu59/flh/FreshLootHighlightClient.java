@@ -19,8 +19,6 @@ import fr.madu59.flh.config.Option.WarningPosition;
 import fr.madu59.flh.config.SettingsManager;
 import fr.madu59.flh.config.configscreen.FreshLootHighlightConfigScreen;
 import fr.madu59.flh.config.highlights.HighlightsToggle;
-import fr.madu59.flh.highlights.sprites.AbstractSprite;
-import fr.madu59.flh.highlights.sprites.ExclamationMarkSprite;
 import fr.madu59.flh.warnings.PickUpWarning;
 import fr.madu59.flh.warnings.PickUpWarningUtils;
 import net.fabricmc.api.ClientModInitializer;

@@ -1,6 +1,8 @@
 package fr.madu59.flh.config.configscreen;
 
+import fr.madu59.flh.FreshLootHighlight;
 import fr.madu59.flh.config.SettingsManager;
+import fr.madu59.flh.config.highlights.HighlightsToggle;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.*;
 import net.minecraft.client.Minecraft;
@@ -12,7 +14,6 @@ import net.minecraft.network.chat.Component;
 public class FreshLootHighlightConfigScreen extends Screen {
     
     private MyConfigListWidget list;
-    private final String INDENT = " ⤷  ";
     private final Screen parent;
 
     protected FreshLootHighlightConfigScreen(Screen parent) {
@@ -35,21 +36,19 @@ public class FreshLootHighlightConfigScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        // Create the scrolling list
         this.list = new MyConfigListWidget(this.minecraft, this.width, this.height - 80, 40, 26);
 
-        // Example: Add categories + buttons
-        list.addCategory("fresh-loot-highlight.config.category_slot_highlighter");
-        list.addButton(SettingsManager.ENABLE_SLOT_HIGHLIGHTER);
-        list.addButton(SettingsManager.SLOT_HIGHLIGHTER_SPRITE, INDENT);
-        list.addCategory("fresh-loot-highlight.config.category_pickup_warning");
-        list.addButton(SettingsManager.ENABLE_PICKUP_WARNING);
-        list.addSlider(SettingsManager.PICKUP_WARNING_TIMEOUT, 3f, 10f, 0.1f, INDENT);
-        list.addSlider(SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT, 0f, 10f, 0.1f, INDENT);
-        list.addButton(SettingsManager.PICKUP_WARNING_STYLE, INDENT);
-        list.addButton(SettingsManager.PICKUP_WARNING_HUD_POSITION, INDENT);
-        list.addButton(SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM, INDENT);
-        list.addButton(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR, INDENT);
+        list.category("fresh-loot-highlight.config.category_slot_highlighter").build();
+        list.button(SettingsManager.ENABLE_SLOT_HIGHLIGHTER).build();
+        list.button(SettingsManager.SLOT_HIGHLIGHTER_SPRITE).indent().isEnabled(() -> SettingsManager.ENABLE_SLOT_HIGHLIGHTER.getValue() != HighlightsToggle.NEVER).build();
+        list.category("fresh-loot-highlight.config.category_pickup_warning").build();
+        list.button(SettingsManager.ENABLE_PICKUP_WARNING).build();
+        list.slider(SettingsManager.PICKUP_WARNING_TIMEOUT).indent().range(3f, 10f).step(0.1f).isEnabled(() -> SettingsManager.ENABLE_PICKUP_WARNING.getValue()).build();
+        list.slider(SettingsManager.PICKUP_WARNING_GROUPING_TIMEOUT).indent().range(0f, 10f).step(0.1f).isEnabled(() -> SettingsManager.ENABLE_PICKUP_WARNING.getValue()).build();
+        list.button(SettingsManager.PICKUP_WARNING_STYLE).indent().isEnabled(() -> SettingsManager.ENABLE_PICKUP_WARNING.getValue()).build();
+        list.button(SettingsManager.PICKUP_WARNING_HUD_POSITION).indent().isEnabled(() -> SettingsManager.ENABLE_PICKUP_WARNING.getValue()).build();
+        list.button(SettingsManager.PICKUP_WARNING_HUD_SHOW_ITEM).indent().isEnabled(() -> SettingsManager.ENABLE_PICKUP_WARNING.getValue()).build();
+        list.button(SettingsManager.ENABLE_PICK_UP_WARNING_NARRATOR).indent().isEnabled(() -> SettingsManager.ENABLE_PICKUP_WARNING.getValue()).build();
 
         Button doneButton = Button.builder(Component.literal("Done"), b -> {
             this.minecraft.setScreen(this.parent);
